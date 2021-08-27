@@ -1,0 +1,10 @@
+name: multiply
+bridge: mantik/sklearn
+kind: algorithm
+type:
+  input:
+    columns:
+      x: float64
+  output:
+    columns:
+      y: float64
