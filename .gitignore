@@ -3,3 +3,6 @@
 *.egg-info/
 **/.pytest_cache/
 *.pyc
+
+# mantik files
+**/target/
