@@ -27,7 +27,7 @@ import pathlib
 import mantik.engine
 import mantik.types
 
-__file_loc__ = pathlib.Path(__file__)
+__file_loc__ = pathlib.Path(__file__).parent
 
 print("Using mantik...\n")
 
@@ -52,11 +52,24 @@ meta = dict()
 my_ref = "power-production-forecast"
 
 with mantik.engine.Client("localhost", 8087) as client:
-    simple_learn = client._add_algorithm(__file_loc__ / "bridges/sklearn/production", named_mantik_id = "mantik/sklearn.production")
-    gradientboosting = client._add_algorithm(__file_loc__ / "bridges/sklearn/production/algorithms/gradientboosting")
+    simple_learn = client._add_algorithm(
+        (__file_loc__ / "bridges/sklearn/production").as_posix(),
+        named_mantik_id = "mantik/sklearn.production",
+    )
+    gradientboosting = client._add_algorithm(
+        (__file_loc__ / "bridges/sklearn/production/algorithms/gradientboosting").as_posix()
+    )
     with client.enter_session():
-        trained_pipe, stats = client.train([gradientboosting], train_bundle, meta=meta, action_name="Training")
+        trained_pipe, stats = client.train(
+            [gradientboosting], 
+            train_bundle, 
+            meta=meta, 
+            action_name="Training",
+        )
         kmeans_trained = client.tag(trained_pipe, my_ref).save()
-        train_result = client.apply(trained_pipe, train_bundle).fetch(action_name="Predict power production")
+        train_result = client.apply(
+            trained_pipe, 
+            train_bundle
+        ).fetch(action_name="Predict power production")
         result = train_result.bundle
 print(f"Result: {result.value}")
