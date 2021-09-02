@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y curl && \
   python -m venv /venv
 
 ADD --chown=mantik-bridge:mantik-bridge target /opt/bridge
+# TODO (fe): include data dir only for production example,
+# delete upon availability of DataSet/Format bridge
+ADD --chown=mantik-bridge:mantik-bridge data /opt/data
 
 # Install bridge dependencies
 WORKDIR /opt/bridge
@@ -39,6 +42,8 @@ RUN groupadd -r mantik-bridge && useradd -r -g mantik-bridge mantik-bridge
 
 COPY --from=builder /venv /venv
 COPY --from=builder /opt/bridge /opt/bridge
+# TODO (fe): delete upon availability of DataSet/Format bridge
+COPY --from=builder /opt/data /opt/data
 
 USER mantik-bridge:mantik-bridge
 WORKDIR /opt/bridge
