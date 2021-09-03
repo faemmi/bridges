@@ -1,9 +1,11 @@
-NAME = sklearn
-ROOT_DIR=./../../../../
-SCRIPTS_DIR=$(ROOT_DIR)scripts/
-PYTHON_SCRIPTS_DIR=./../../scripts/
-DOCKER_IMAGE_NAME=bridge.sklearn
-DOCKER_FILE=$(PYTHON_SCRIPTS_DIR)Dockerfile.python_bridge
-include $(PYTHON_SCRIPTS_DIR)Makefile.python_bridge
-include $(SCRIPTS_DIR)Makefile.docker_single
+# Define the name of the bridge and its docker image
+NAME = sklearn.simple
+DOCKER_IMAGE_NAME=bridge.sklearn.simple
+
+# Include all other necessary make files
+ROOT=./../../../../../
+PYTHON_ROOT=$(ROOT)/examples/python
+DOCKER_FILE=$(PYTHON_ROOT)/scripts/Dockerfile.python_bridge
+include $(PYTHON_ROOT)/scripts/Makefile.python_bridge
+include $(ROOT)/scripts/Makefile.docker_single
 

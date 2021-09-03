@@ -1,5 +1,5 @@
 name: kmeans
-bridge: mantik/sklearn
+bridge: mantik/sklearn.simple
 kind: trainable
 metaVariables:
   - name: n_clusters
