@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y curl && \
 
 ADD --chown=mantik-bridge:mantik-bridge target /opt/bridge
 # TODO (fe): include data dir only for production example,
-# delete upon availability of DataSet/Format bridge
+# delete upon availability of DataSet bridge
 ADD --chown=mantik-bridge:mantik-bridge data /opt/data
 
 # Install bridge dependencies

@@ -5,5 +5,11 @@ You will need
 - Python 3.7 (required by [mantik](https://pypi.org/project/mantik/) and [mnp](https://pypi.org/project/mnp/))
 - the Python dependency management tool `poetry`
 
-## Procedure
-1. 
+## Creating the bridge
+1. Write the bridge.
+
+## Running the bridge
+1. Run the `train_algorithm.py` script
+   ```commandline
+   poetry run python train_algorithm.py
+   ```

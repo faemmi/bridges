@@ -6,3 +6,4 @@
 
 # mantik files
 **/target/
+*.pickle
