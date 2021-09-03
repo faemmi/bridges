@@ -1,0 +1,9 @@
+# Include all other necessary make files
+# Note: the paths here are relative to the directory where the 
+# base Makefile is being executed. This is supposed to be 
+# `examples/python/bridges/<framework>/<bridge name>/Makefile`.
+ROOT=./../../../../../
+PYTHON_ROOT=./../../../
+DOCKER_FILE=$(PYTHON_ROOT)/scripts/Dockerfile.python_bridge
+include $(PYTHON_ROOT)/scripts/Makefile.python_bridge
+include $(ROOT)/scripts/Makefile.docker_single
