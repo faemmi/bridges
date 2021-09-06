@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "mantik-sklearn-bridge"
 description = "Mantik bridge for sklearn"
-version = "0.1.0"
+version = "0.3.0-rc6"
 authors = ["Mantik Team <info@mantik.ai>"]
 homepage = "https://www.mantik.ai"
 

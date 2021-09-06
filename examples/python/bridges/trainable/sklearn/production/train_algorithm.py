@@ -54,7 +54,7 @@ my_ref = "power-production-forecast"
 with mantik.engine.Client("localhost", 8087) as client:
     simple_learn = client._add_algorithm(
         __file_loc__.as_posix(),
-        named_mantik_id = "mantik/sklearn.production",
+        named_mantik_id="mantik/sklearn.production",
     )
     gradientboosting = client._add_algorithm(
         (__file_loc__ / "algorithms/gradientboosting").as_posix()
