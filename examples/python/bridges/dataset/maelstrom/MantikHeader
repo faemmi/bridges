@@ -1,0 +1,8 @@
+# MantikHeader for Simple Learn Bridge
+kind: bridge
+account: mantik
+name: dataset.production
+suitable:
+  - dataset
+dockerImage: mantikai/bridge.dataset.production
+protocol: 1
