@@ -358,8 +358,8 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 
 [metadata]
 lock-version = "1.1"
-python-versions = "~3.7"
-content-hash = "104a96193a5b588da04a91f2841bcb216263136fbf0933ac7c1ab301b42b7b9e"
+python-versions = "~3.7.10"
+content-hash = "e0896649d664c0f87ca20540549ddbccf7d52b7db5b9b261ed868647299b0de5"
 
 [metadata.files]
 atomicwrites = [

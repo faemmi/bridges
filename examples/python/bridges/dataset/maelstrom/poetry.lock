@@ -131,7 +131,7 @@ version = "0.4.0-dev"
 description = ""
 category = "main"
 optional = false
-python-versions = "^3.7"
+python-versions = "~3.7"
 develop = true
 
 [package.dependencies]
@@ -150,7 +150,7 @@ version = "0.4.0-dev"
 description = ""
 category = "main"
 optional = false
-python-versions = "^3.7"
+python-versions = "~3.7"
 develop = true
 
 [package.dependencies]

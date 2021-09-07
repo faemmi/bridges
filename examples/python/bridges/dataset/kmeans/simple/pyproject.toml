@@ -1,14 +1,15 @@
 [tool.poetry]
-name = "mantik-sklearn-bridge"
-description = "Mantik bridge for sklearn"
+name = "mantik-kmeans-dataset-bridge"
+description = "Mantik bridge for kmeans dataset"
 version = "0.3.0-rc6"
 authors = ["Mantik Team <info@mantik.ai>"]
 homepage = "https://www.mantik.ai"
 
 [tool.poetry.dependencies]
-python = "~3.7"
+python = "~3.7.10"
 mantik = { path = "./../../../../../../../core/python_sdk", develop = true }
 mnp = { path = "./../../../../../../../core/mnp/mnppython", develop = true }
+numpy = "1.21.2"
 scikit-learn = "^0.24.2"
 
 [tool.poetry.dev-dependencies]

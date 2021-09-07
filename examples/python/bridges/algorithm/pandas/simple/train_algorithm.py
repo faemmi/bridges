@@ -35,30 +35,38 @@ import mantik.types
 
 __file_loc__ = pathlib.Path(__file__).parent
 
+centers = np.sort(np.array([[1, 1], [0, 0], [-1, -1]]), axis=0)
+data, _ = make_blobs(n_samples=100, n_features=2, centers=centers, cluster_std=0.95)
+label = pairwise_distances_argmin(data, centers)
+
+train_data, test_data, train_label, test_label = train_test_split(data, label)
 print("Using mantik...\n")
 start_time = time.time()
 
-n_clusters = 3
+ds = """
+{
+    "columns":
+    {
+        "coordinates":
+        {
+            "type": "tensor",
+            "shape": [2],
+            "componentType": "float64"
+        }
+    }
+}
+"""
+data_type = mantik.types.DataType.from_json(ds)
+# TODO (mq): This reshaping is unintuitive
+train_bundle = mantik.types.Bundle(data_type, train_data.reshape(-1, 1, 2).tolist())
+test_bundle = mantik.types.Bundle(data_type, test_data.reshape(-1, 1, 2).tolist())
+
+n_clusters = len(centers)
 meta = dict(n_clusters=n_clusters)
 
 my_ref = "mq/kmeans_trained_on_blobs"
 
-print((__file_loc__ / "../../../").resolve())
-
 with mantik.engine.Client("localhost", 8087) as client:
-    dataset = client._add_algorithm(
-        (__file_loc__ / "../../../dataset/kmeans/simple").as_posix(),
-        named_mantik_id="mantik/dataset.kmeans",
-    )
-    simple_dataset = client._add_algorithm(
-        (__file_loc__ / "../../../dataset/kmeans/simple/datasets/simple").as_posix()
-    )
-    transform = client._add_algorithm(
-        (__file_loc__ / "../../../algorithm/pandas/simple").as_posix()
-    )
-    simple_transform = client._add_algorithm(
-        (__file_loc__ / "../../../algorithm/pandas/simple/algorithms/transform").as_posix()
-    )
     simple_learn = client._add_algorithm(
         __file_loc__.as_posix(),
         named_mantik_id="mantik/sklearn.simple",
@@ -67,9 +75,6 @@ with mantik.engine.Client("localhost", 8087) as client:
         (__file_loc__ / "algorithms/kmeans").as_posix()
     )
     with client.enter_session():
-        breakpoint()
-        result = client.apply(simple_transform, simple_dataset)
-        breakpoint()
         trained_pipe, stats = client.train([kmeans], train_bundle, meta=meta, action_name="Training")
         kmeans_trained = client.tag(trained_pipe, my_ref).save()
         train_result = client.apply(trained_pipe, train_bundle).fetch(action_name="Fetching Train Results")

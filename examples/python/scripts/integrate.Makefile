@@ -4,6 +4,6 @@
 # `examples/python/bridges/<kind>/<framework>/<bridge name>/Makefile`.
 ROOT=./../../../../../../
 PYTHON_ROOT=./../../../../
-DOCKER_FILE=$(PYTHON_ROOT)/scripts/Dockerfile.python_bridge
-include $(PYTHON_ROOT)/scripts/Makefile.python_bridge
-include $(ROOT)/scripts/Makefile.docker_single
+DOCKER_FILE=$(PYTHON_ROOT)/scripts/python_bridge.Dockerfile
+include $(PYTHON_ROOT)/scripts/python_bridge.Makefile
+include $(ROOT)/scripts/docker_single.Makefile

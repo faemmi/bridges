@@ -1,8 +1,8 @@
 # MantikHeader for Simple Learn Bridge
 kind: bridge
 account: mantik
-name: dataset.maelstrom
+name: pandas.simple
 suitable:
-  - dataset
-dockerImage: mantikai/bridge.dataset.maelstrom
+  - algorithm
+dockerImage: mantikai/bridge.pandas.simple
 protocol: 1

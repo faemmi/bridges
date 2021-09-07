@@ -2,7 +2,7 @@ FROM python:3.7.10-slim-buster as builder
 RUN groupadd -r mantik-bridge && useradd -r -g mantik-bridge mantik-bridge
 
 # Install poetry for Python
-ARG POETRY_VERSION="1.1.8"
+ARG POETRY_VERSION="1.1.6"
 
 ENV PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \

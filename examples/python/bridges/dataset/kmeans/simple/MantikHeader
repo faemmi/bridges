@@ -1,8 +1,8 @@
 # MantikHeader for Simple Learn Bridge
 kind: bridge
 account: mantik
-name: dataset.maelstrom
+name: dataset.kmeans
 suitable:
   - dataset
-dockerImage: mantikai/bridge.dataset.maelstrom
+dockerImage: mantikai/bridge.dataset.kmeans
 protocol: 1

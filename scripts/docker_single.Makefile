@@ -7,7 +7,7 @@
 
 # Get directory relative directory of this file
 SELF_DIR := $(dir $(lastword $(MAKEFILE_LIST)))
-include $(SELF_DIR)/Makefile.docker_shared
+include $(SELF_DIR)/docker_shared.Makefile
 
 IMAGE_FULL_NAME = $(DOCKER_REPO)/$(DOCKER_IMAGE_NAME)
 REMOTE_IMAGE_NAME = $(REMOTE_REPO_NAME)/$(REMOTE_REPO_GROUP)$(DOCKER_IMAGE_NAME):$(REMOTE_IMAGE_TAG)

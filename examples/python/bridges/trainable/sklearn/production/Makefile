@@ -6,4 +6,4 @@ DOCKER_IMAGE_NAME=$(IMAGE_NAME):$(MANTIK_VERSION)
 
 # Include all other necessary Makefiles.
 PYTHON_SCRIPTS=./../../../../scripts
-include  $(PYTHON_SCRIPTS)/Makefile.integrate
+include  $(PYTHON_SCRIPTS)/integrate.Makefile
