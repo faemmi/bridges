@@ -1,4 +1,5 @@
 MAKEFLAGS += --no-builtin-rules
+ROOT_DIR = ./../../../../../../../
 
 # Caching
 ifdef CACHE_DIR
@@ -26,6 +27,15 @@ target/copy_py.make: $(shell find . -name "*.py" -not -path "./target/*" -not -p
 target/copy_shared.make: $(shell find $(MANTIK_ROOT)/python_sdk -name "*.py")
 	mkdir -p target
 	cp poetry.lock pyproject.toml target/
+
+	# Below is just for local developing
+	cp -v -r $(ROOT_DIR)/core/python_sdk target/
+	cp -v -r $(ROOT_DIR)/core/mnp/mnppython target/
+
+	# Rewrite relative paths to allow installation of the packages
+	sed -i 's/".*python_sdk"/"\.\/python_sdk"/' target/poetry.lock target/pyproject.toml
+	sed -i 's/".*mnppython"/"\.\/mnppython"/' target/poetry.lock target/pyproject.toml
+	sed -i 's/".*mnppython"/"\.\/..\/mnppython"/' target/python_sdk/poetry.lock target/python_sdk/pyproject.toml
 
 	touch $@
 
