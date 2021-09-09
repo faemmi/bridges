@@ -29,36 +29,25 @@ __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.MnpClient("localhost", 8087) as client:
     dataset = client.add_item(
-        (__file_loc__ / "../../../dataset/kmeans/simple").as_posix(),
+        (__file_loc__/ "../../../dataset/kmeans/simple").as_posix(),
         named_mantik_id="mantik/dataset.kmeans",
     )
     simple_dataset = client.add_item(
-        (__file_loc__ / "../../../dataset/kmeans/simple/datasets/simple").as_posix()
+        (__file_loc__ / "../../../dataset/kmeans/simple/datasets/simple").as_posix(),
+    )
+    pandas = client.add_item(
+        __file_loc__.as_posix(),
+        named_mantik_id="mantik/pandas.simple",
     )
     transform = client.add_item(
-        (__file_loc__ / "../../../algorithm/pandas/simple").as_posix()
+        (__file_loc__ / "algorithms/transform").as_posix(),
+        named_mantik_id="mantik/pandas.simple.transform"
     )
-    simple_transform = client.add_item(
-        (__file_loc__ / "../../../algorithm/pandas/simple/algorithms/transform").as_posix()
-    )
-    simple_transform2 = client.add_item(
-        (__file_loc__ / "../../../algorithm/pandas/simple/algorithms/transform2").as_posix()
-    )
-    simple_learn = client.add_item(
-        __file_loc__.as_posix(),
-        named_mantik_id="mantik/sklearn.simple",
-    )
-    kmeans = client.add_item(
-        (__file_loc__ / "algorithms/simple").as_posix()
+    transform2 = client.add_item(
+        (__file_loc__ / "algorithms/transform2").as_posix(),
+        named_mantik_id="mantik/pandas.simple.transform"
     )
     with client.enter_session():
-        trained_pipe, stats = client.train(
-            pipe=[simple_transform, simple_transform2, kmeans],
-            data=simple_dataset,
-            meta={},
-            action_name="Training",
-        )
-        kmeans_trained = client.tag(trained_pipe, "any_ref").save()
-        test_result = client.apply(trained_pipe, simple_dataset, action_name="Testing apply of model")
-        breakpoint()
-        print()
+        result = client.apply([transform, transform2], data=simple_dataset)
+        print(result.bundle.value)
+

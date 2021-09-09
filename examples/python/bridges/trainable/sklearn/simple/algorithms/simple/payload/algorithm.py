@@ -20,21 +20,25 @@
 # a commercial license.
 #
 
-import os
+import pickle
+
 import mantik
 
 
-# Wraps the supplied DataSet
-class DataSetWrapper(mantik.bridge.DataSet):
-    def __init__(self, mantikheader: mantik.types.MantikHeader):
-        # TODO: I am pretty sure there is a nicer way to do so
-        import sys
+MODEL_FILE = "model.pickle"
 
-        sys.path.append(mantikheader.payload_dir)
-        import dataset
 
-        self.get_func = dataset.get
-        self.mantikheader = mantikheader
+def train(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
+    model = bundle.value
+    with open(MODEL_FILE, "wb") as f:
+        pickle.dump(model, f)
+    return mantik.types.Bundle(value=bundle.value)
 
-    def get(self):
-        return self.get_func(self.mantikheader.meta_variables)
+
+def try_init():
+    with (open(MODEL_FILE, "rb")) as f:
+        return pickle.load(f)
+
+
+def apply(model, bundle: mantik.types.Bundle) -> mantik.types.Bundle:
+    return mantik.types.Bundle(value=bundle.value)

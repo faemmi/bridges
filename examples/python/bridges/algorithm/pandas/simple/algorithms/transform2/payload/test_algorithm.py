@@ -4,9 +4,10 @@ import algorithm
 
 
 def test_apply():
-    bundle = mantik.types.Bundle(value=[[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+    value = [[6], [15], [24]]
+    bundle = mantik.types.Bundle(value=value)
     meta = mantik.types.MetaVariables()
-    expected = [[6], [15], [24]]
+    expected = [[6**2], [15**2], [24**2]]
 
     result = algorithm.apply(bundle, meta)
 

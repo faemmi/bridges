@@ -21,10 +21,9 @@
 #
 import pandas
 
-import mantik.types
+import mantik
 
 
 def apply(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
-    # Just pass the data as they arrive
-    value = bundle.value
+    value = [[sum(row)] for row in bundle.value]
     return mantik.types.Bundle(value=value)

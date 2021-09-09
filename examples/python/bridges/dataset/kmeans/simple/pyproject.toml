@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "mantik-kmeans-dataset-bridge"
+name = "mantik-bridge-dataset-kmeans"
 description = "Mantik bridge for kmeans dataset"
 version = "0.3.0-rc6"
 authors = ["Mantik Team <info@mantik.ai>"]

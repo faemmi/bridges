@@ -19,22 +19,11 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+import pandas
 
-import os
 import mantik
 
 
-# Wraps the supplied DataSet
-class DataSetWrapper(mantik.bridge.DataSet):
-    def __init__(self, mantikheader: mantik.types.MantikHeader):
-        # TODO: I am pretty sure there is a nicer way to do so
-        import sys
-
-        sys.path.append(mantikheader.payload_dir)
-        import dataset
-
-        self.get_func = dataset.get
-        self.mantikheader = mantikheader
-
-    def get(self):
-        return self.get_func(self.mantikheader.meta_variables)
+def apply(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
+    value = [[row[0]**2] for row in bundle.value]
+    return mantik.types.Bundle(value=value)

@@ -47,7 +47,7 @@ You will need
    dockerImage: mantikai/bridge.<application>
    protocol: 1
    ```
-   Possible suitables are:
+   Possible suitables (i.e. bridge kinds) are:
      - dataset
      - algorithm
      - trainable

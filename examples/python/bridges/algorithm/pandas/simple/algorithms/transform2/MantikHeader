@@ -1,12 +1,10 @@
-name: transform
+name: transform2
 bridge: mantik/pandas.simple
 kind: algorithm
 type:
   input:
     columns:
       x: int32
-      y: int32
-      z: int32
   output:
     columns:
       x: int32

@@ -24,8 +24,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.datasets import make_blobs
 from sklearn.metrics.pairwise import pairwise_distances_argmin
 
-import mantik.engine
-import mantik.types
+import mantik
 
 
 def get(meta: mantik.types.MetaVariables) -> mantik.types.Bundle:

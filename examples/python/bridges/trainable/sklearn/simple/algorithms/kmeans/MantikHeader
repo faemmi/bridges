@@ -32,11 +32,10 @@ metaVariables:
 # The type of training data
 trainingType:
   columns:
-    x: int32
-#    coordinates:
-#      type: tensor
-#      shape: [2]
-#      componentType: float64
+    coordinates:
+     type: tensor
+     shape: [2]
+     componentType: float64
 # The type for statistic after training
 statType:
   columns:

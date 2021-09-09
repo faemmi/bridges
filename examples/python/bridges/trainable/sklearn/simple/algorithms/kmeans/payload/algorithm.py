@@ -33,7 +33,7 @@ MODEL_FILE = "model.pickle"
 
 
 def train(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
-    return mantik.types.Bundle(value=bundle.value)
+    #return mantik.types.Bundle(value=bundle.value)
 
     coordinates = bundle.flat_column("coordinates")
     learn_data = np.array(coordinates)
