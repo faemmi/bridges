@@ -27,23 +27,23 @@ import mantik
 
 __file_loc__ = pathlib.Path(__file__).parent
 
-with mantik.engine.MnpClient("localhost", 8087) as client:
-    dataset = client.add_item(
+with mantik.engine.EngineClient("localhost", 8087) as client:
+    dataset = client.add_artifact(
         (__file_loc__/ "../../../dataset/kmeans/simple").as_posix(),
         named_mantik_id="mantik/dataset.kmeans",
     )
-    simple_dataset = client.add_item(
+    simple_dataset = client.add_artifact(
         (__file_loc__ / "../../../dataset/kmeans/simple/datasets/simple").as_posix(),
     )
-    pandas = client.add_item(
+    pandas = client.add_artifact(
         __file_loc__.as_posix(),
         named_mantik_id="mantik/pandas.simple",
     )
-    transform = client.add_item(
+    transform = client.add_artifact(
         (__file_loc__ / "algorithms/transform").as_posix(),
         named_mantik_id="mantik/pandas.simple.transform"
     )
-    transform2 = client.add_item(
+    transform2 = client.add_artifact(
         (__file_loc__ / "algorithms/transform2").as_posix(),
         named_mantik_id="mantik/pandas.simple.transform"
     )
