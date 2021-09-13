@@ -1,6 +1,5 @@
-import mantik.types
-
 import dataset
+import mantik.types
 
 
 def test_apply():

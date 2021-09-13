@@ -18,9 +18,7 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-
 """Run sklearn.cluster.KMeans via mantik."""
-
 import pathlib
 
 import mantik
@@ -35,9 +33,7 @@ with mantik.engine.Client("localhost", 8087) as client:
     simple_dataset = client.add_artifact(
         (__file_loc__ / "../../../dataset/kmeans/simple/datasets/simple").as_posix()
     )
-    transform = client.add_artifact(
-        (__file_loc__ / "../../../algorithm/pandas/simple").as_posix()
-    )
+    transform = client.add_artifact((__file_loc__ / "../../../algorithm/pandas/simple").as_posix())
     simple_transform = client.add_artifact(
         (__file_loc__ / "../../../algorithm/pandas/simple/algorithms/transform").as_posix()
     )
@@ -48,9 +44,7 @@ with mantik.engine.Client("localhost", 8087) as client:
         __file_loc__.as_posix(),
         named_mantik_id="mantik/sklearn.simple",
     )
-    kmeans = client.add_artifact(
-        (__file_loc__ / "algorithms/simple").as_posix()
-    )
+    kmeans = client.add_artifact((__file_loc__ / "algorithms/simple").as_posix())
     with client.enter_session():
         trained_pipe, stats = client.train(
             pipeline=[simple_transform, simple_transform2, kmeans],
@@ -58,7 +52,8 @@ with mantik.engine.Client("localhost", 8087) as client:
             action_name="Training",
         )
         kmeans_trained = client.tag(trained_pipe, "any_ref")
-        test_result = client.apply(trained_pipe, simple_dataset, action_name="Testing apply of model")
+        test_result = client.apply(
+            trained_pipe, simple_dataset, action_name="Testing apply of model"
+        )
         print(f"Stats: {stats.bundle.value}")
         print(f"Apply result: {test_result.bundle.value}")
-

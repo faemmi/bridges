@@ -7,7 +7,7 @@ You will need
 
 ## Creating the bridge
 1. Write the bridge.
-2. In the `Makefile`, define the 
+2. In the `Makefile`, define the
    - name of the bridge (`NAME=<bridge name>`)
    - name of the Docker image of the bridge (`DOCKER_IMAGE_NAME=bridge.<docker image name>`)
    **Note:** Avoid adapting any of the other variables
@@ -19,18 +19,18 @@ You will need
    version = "<version of mantik>"
    authors = ["<Your name> <<your email>>"] # Note that the email is inside `<>`
    homepage = "https://www.mantik.ai"
-   
+
    [tool.poetry.dependencies]
    python = "~3.7"  # required by mantik
    mantik = "0.3.0-rc6"  # version of mantik that is used in the bridge, will also include `mnp`
    <any other 3rd-party dependencies go here>
-   
+
    [tool.poetry.dev-dependencies]
    pytest = "^6.2.4"  # for testing the bridge implementation
-   
+
    [build-system]
    requires = ["poetry>=1.0.0"]
-   
+
    [tool.pytest.ini_options]
    norecursedirs = "target"
    ```
@@ -64,7 +64,7 @@ building the simple bridge, the two lines including the data directory have to b
 commented out.
 
 ## Running the bridge
-1. In the `algorithms/<algorithm name>/MantikHeader`, insert the correct bridge name for 
+1. In the `algorithms/<algorithm name>/MantikHeader`, insert the correct bridge name for
    the  `bridge` field.
 2. Run the `train_algorithm.py` script
    ```commandline

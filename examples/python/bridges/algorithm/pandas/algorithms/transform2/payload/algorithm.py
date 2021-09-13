@@ -19,11 +19,9 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-import pandas
-
 import mantik
 
 
 def apply(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
-    value = [[row[0]**2] for row in bundle.value]
+    value = [[row[0] ** 2] for row in bundle.value]
     return mantik.types.Bundle(value=value)

@@ -19,15 +19,12 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-
-import os
-from mantik.bridge import Algorithm
-from mantik.types import MantikHeader, Bundle
+import mantik
 
 
 # Wraps the supplied algorithm
-class AlgorithmWrapper(Algorithm):
-    def __init__(self, mantikheader: MantikHeader):
+class AlgorithmWrapper(mantik.bridge.Algorithm):
+    def __init__(self, mantikheader: mantik.types.MantikHeader):
         # TODO: I am pretty sure there is a nicer way to do so
         import sys
 
@@ -37,5 +34,5 @@ class AlgorithmWrapper(Algorithm):
         self.apply_func = algorithm.apply
         self.mantikheader = mantikheader
 
-    def apply(self, data: Bundle):
+    def apply(self, data: mantik.types.Bundle):
         return self.apply_func(data, self.mantikheader.meta_variables)

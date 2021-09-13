@@ -1,6 +1,5 @@
-import mantik.types
-
 import algorithm
+import mantik.types
 
 
 def test_apply():

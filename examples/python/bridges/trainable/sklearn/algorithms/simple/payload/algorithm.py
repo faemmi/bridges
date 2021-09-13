@@ -19,7 +19,6 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-
 import pickle
 
 import mantik

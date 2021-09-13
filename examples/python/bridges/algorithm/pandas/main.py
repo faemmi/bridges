@@ -19,10 +19,9 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-
+from algorithm_wrapper import AlgorithmWrapper
 from mantik.bridge import start_mnp_bridge
 from mantik.types import MantikHeader
-from algorithm_wrapper import AlgorithmWrapper
 
 
 def create_algorithm(mantikheader: MantikHeader):

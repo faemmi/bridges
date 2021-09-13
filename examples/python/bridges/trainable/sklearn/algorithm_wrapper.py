@@ -19,15 +19,14 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-
 import os
-from mantik.bridge import Algorithm
-from mantik.types import MantikHeader, Bundle
+
+import mantik
 
 
 # Wraps the supplied algorithm
-class AlgorithmWrapper(Algorithm):
-    def __init__(self, mantikheader: MantikHeader):
+class AlgorithmWrapper(mantik.bridge.TrainableAlgorithm):
+    def __init__(self, mantikheader: mantik.types.MantikHeader):
         # TODO: I am pretty sure there is a nicer way to do so
         import sys
 
@@ -65,7 +64,7 @@ class AlgorithmWrapper(Algorithm):
             os.chdir(old_pwd)
 
     @property
-    def training_stats(self) -> Bundle:
+    def training_stats(self) -> mantik.types.Bundle:
         return self.training_stats_result
 
     def try_init_catching(self):
@@ -76,7 +75,7 @@ class AlgorithmWrapper(Algorithm):
             print("Successfully loaded Model...")
             self.is_trained_status = True
         except Exception as e:
-            print("Could not load Model {}".format(e))
+            print(f"Could not load Model {e}")
         finally:
             os.chdir(old_pwd)
 

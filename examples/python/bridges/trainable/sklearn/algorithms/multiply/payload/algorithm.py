@@ -19,7 +19,6 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-
 import mantik.types
 import numpy as np
 
@@ -35,5 +34,5 @@ def try_init():
 def apply(_, bundle: mantik.types.Bundle) -> mantik.types.Bundle:
     coordinates = bundle.flat_column("x")
     data = np.array(coordinates)
-    result = 2*data
+    result = 2 * data
     return mantik.types.Bundle.from_flat_column(result.tolist())

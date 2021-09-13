@@ -54,4 +54,3 @@ services:
 volumes:
   mantik-engine-repo: {}
   mantik-engine-logs: {}
-
