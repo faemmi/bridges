@@ -27,7 +27,7 @@ import mantik
 
 __file_loc__ = pathlib.Path(__file__).parent
 
-with mantik.engine.EngineClient("localhost", 8087) as client:
+with mantik.engine.Client("localhost", 8087) as client:
     dataset = client.add_artifact(
         __file_loc__.as_posix(),
         named_mantik_id="mantik/dataset.kmeans",

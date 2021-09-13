@@ -116,7 +116,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "mantik"
-version = "0.4.0-dev"
+version = "0.1.0"
 description = ""
 category = "main"
 optional = false
@@ -131,11 +131,11 @@ requests = "^2.25.1"
 
 [package.source]
 type = "directory"
-url = "../../../../../../../core/python_sdk"
+url = "../../../../../../core/python_sdk"
 
 [[package]]
 name = "mnp"
-version = "0.4.0-dev"
+version = "0.1.0"
 description = ""
 category = "main"
 optional = false
@@ -149,7 +149,7 @@ protobuf = "^3.16.0"
 
 [package.source]
 type = "directory"
-url = "../../../../../../../core/mnp/mnppython"
+url = "../../../../../../core/mnp/mnppython"
 
 [[package]]
 name = "msgpack"
@@ -359,7 +359,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "~3.7.10"
-content-hash = "e0896649d664c0f87ca20540549ddbccf7d52b7db5b9b261ed868647299b0de5"
+content-hash = "aa0efcc530429994a6081f8bc174cbf03c9cb056b7a3f23ee7f8d56764d4398a"
 
 [metadata.files]
 atomicwrites = [

@@ -1,5 +1,8 @@
 MAKEFLAGS += --no-builtin-rules
-ROOT_DIR = ./../../../../../../../
+# Note: the root dir path here is relative to the directory where the
+# base Makefile is being executed. This is supposed to be
+# `examples/python/bridges/<kind>/<framework>/Makefile`.
+ROOT_DIR = ./../../../../../../
 
 # Caching
 ifdef CACHE_DIR

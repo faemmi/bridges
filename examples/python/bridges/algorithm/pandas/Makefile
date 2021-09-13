@@ -5,5 +5,5 @@ IMAGE_NAME=bridge.pandas.simple
 DOCKER_IMAGE_NAME=$(IMAGE_NAME):$(MANTIK_VERSION)
 
 # Include all other necessary Makefiles.
-PYTHON_SCRIPTS=./../../../../scripts
+PYTHON_SCRIPTS=./../../../scripts
 include  $(PYTHON_SCRIPTS)/integrate.Makefile
