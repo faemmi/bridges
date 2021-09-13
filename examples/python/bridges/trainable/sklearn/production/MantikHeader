@@ -1,9 +1,0 @@
-# MantikHeader for Simple Learn Bridge
-kind: bridge
-account: mantik
-name: sklearn.production
-suitable:
-  - algorithm
-  - trainable
-dockerImage: mantikai/bridge.sklearn.production
-protocol: 1

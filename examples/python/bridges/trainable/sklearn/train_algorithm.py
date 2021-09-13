@@ -27,7 +27,7 @@ import mantik
 
 __file_loc__ = pathlib.Path(__file__).parent
 
-with mantik.engine.EngineClient("localhost", 8087) as client:
+with mantik.engine.Client("localhost", 8087) as client:
     dataset = client.add_artifact(
         (__file_loc__ / "../../../dataset/kmeans/simple").as_posix(),
         named_mantik_id="mantik/dataset.kmeans",
@@ -53,12 +53,11 @@ with mantik.engine.EngineClient("localhost", 8087) as client:
     )
     with client.enter_session():
         trained_pipe, stats = client.train(
-            pipe=[simple_transform, simple_transform2, kmeans],
+            pipeline=[simple_transform, simple_transform2, kmeans],
             data=simple_dataset,
-            meta={},
             action_name="Training",
         )
-        kmeans_trained = client.tag(trained_pipe, "any_ref").save()
+        kmeans_trained = client.tag(trained_pipe, "any_ref")
         test_result = client.apply(trained_pipe, simple_dataset, action_name="Testing apply of model")
         print(f"Stats: {stats.bundle.value}")
         print(f"Apply result: {test_result.bundle.value}")
