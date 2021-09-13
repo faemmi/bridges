@@ -31,3 +31,8 @@ To achieve working and readable code, use `pre-commit`:
    ```commandline
    pre-commit install
    ```
+3. The pre-commit hooks now get automatically executed at each commit.
+   Alternatively, you can run them on all files:
+   ```commandline
+   pre-commit run --all
+   ```
