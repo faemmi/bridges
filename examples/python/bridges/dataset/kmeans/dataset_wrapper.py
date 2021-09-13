@@ -34,5 +34,5 @@ class DataSetWrapper(mantik.bridge.DataSet):
         self.get_func = dataset.get
         self.mantikheader = mantikheader
 
-    def get(self):
+    def get(self) -> mantik.types.Bundle:
         return self.get_func(self.mantikheader.meta_variables)

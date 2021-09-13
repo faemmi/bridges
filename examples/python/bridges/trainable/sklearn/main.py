@@ -19,15 +19,14 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+import mantik
 from algorithm_wrapper import AlgorithmWrapper
-from mantik.bridge import start_mnp_bridge
-from mantik.types import MantikHeader
 
 
-def createAlgorithm(mantikheader: MantikHeader):
+def createAlgorithm(mantikheader: mantik.types.MantikHeader):
     algorithm = AlgorithmWrapper(mantikheader)
     algorithm.try_init_catching()
     return algorithm
 
 
-start_mnp_bridge(createAlgorithm, "Sklearn Bridge")
+mantik.bridge.start_mnp_bridge(createAlgorithm, "Sklearn Bridge")

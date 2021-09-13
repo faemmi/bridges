@@ -19,14 +19,13 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+import mantik
 from dataset_wrapper import DataSetWrapper
-from mantik.bridge import start_mnp_bridge
-from mantik.types import MantikHeader
 
 
-def create_dataset(mantikheader: MantikHeader):
+def create_dataset(mantikheader: mantik.types.MantikHeader):
     dataset = DataSetWrapper(mantikheader)
     return dataset
 
 
-start_mnp_bridge(create_dataset, "kmeans DataSet Bridge")
+mantik.bridge.start_mnp_bridge(create_dataset, "kmeans DataSet Bridge")

@@ -1,5 +1,5 @@
 name: transform
-bridge: mantik/pandas.simple
+bridge: mantik/pandas
 kind: algorithm
 type:
   input:

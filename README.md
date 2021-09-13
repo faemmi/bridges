@@ -13,7 +13,7 @@ Hence, you need
 
 1. Start up the mantik engine in Docker locally
    ```commandline
-   docker-compose -f docker-compose.yaml up
+   docker-compose up
    ```
 1. Currently, mantik supports developing bridges in Go, Scala, or Python.
    Follow the instructions for the respective language in `examples/<language>/Instructions.md`.

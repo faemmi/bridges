@@ -19,14 +19,13 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+import mantik
 from algorithm_wrapper import AlgorithmWrapper
-from mantik.bridge import start_mnp_bridge
-from mantik.types import MantikHeader
 
 
-def create_algorithm(mantikheader: MantikHeader):
+def create_algorithm(mantikheader: mantik.types.MantikHeader):
     algorithm = AlgorithmWrapper(mantikheader)
     return algorithm
 
 
-start_mnp_bridge(create_algorithm, "Pandas Bridge")
+mantik.bridge.start_mnp_bridge(create_algorithm, "Pandas Bridge")

@@ -42,7 +42,7 @@ with mantik.engine.Client("localhost", 8087) as client:
     )
     simple_learn = client.add_artifact(
         __file_loc__.as_posix(),
-        named_mantik_id="mantik/sklearn.simple",
+        named_mantik_id="mantik/sklearn",
     )
     kmeans = client.add_artifact((__file_loc__ / "algorithms/simple").as_posix())
     with client.enter_session():

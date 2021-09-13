@@ -35,15 +35,15 @@ with mantik.engine.Client("localhost", 8087) as client:
     )
     pandas = client.add_artifact(
         __file_loc__.as_posix(),
-        named_mantik_id="mantik/pandas.simple",
+        named_mantik_id="mantik/pandas",
     )
     transform = client.add_artifact(
         (__file_loc__ / "algorithms/transform").as_posix(),
-        named_mantik_id="mantik/pandas.simple.transform",
+        named_mantik_id="mantik/pandas.transform",
     )
     transform2 = client.add_artifact(
         (__file_loc__ / "algorithms/transform2").as_posix(),
-        named_mantik_id="mantik/pandas.simple.transform",
+        named_mantik_id="mantik/pandas.transform",
     )
     with client.enter_session():
         result = client.apply([transform, transform2], data=simple_dataset)
