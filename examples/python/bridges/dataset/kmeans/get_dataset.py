@@ -26,10 +26,7 @@ import mantik
 __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.Client("localhost", 8087) as client:
-    dataset = client.add_artifact(
-        __file_loc__.as_posix(),
-        named_mantik_id="mantik/dataset.kmeans",
-    )
+    dataset = client.add_artifact(__file_loc__.as_posix())
     simple_dataset = client.add_artifact((__file_loc__ / "datasets/simple").as_posix())
     with client.enter_session():
         result = client.get(simple_dataset, action_name="Get simple kmeans dataset")

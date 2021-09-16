@@ -26,24 +26,18 @@ import mantik
 __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.Client("localhost", 8087) as client:
-    dataset = client.add_artifact(
-        (__file_loc__ / "../../../dataset/kmeans/simple").as_posix(),
-        named_mantik_id="mantik/dataset.kmeans",
-    )
+    dataset = client.add_artifact((__file_loc__ / "../../dataset/kmeans").as_posix())
     simple_dataset = client.add_artifact(
-        (__file_loc__ / "../../../dataset/kmeans/simple/datasets/simple").as_posix()
+        (__file_loc__ / "../../dataset/kmeans/datasets/simple").as_posix()
     )
-    transform = client.add_artifact((__file_loc__ / "../../../algorithm/pandas/simple").as_posix())
+    transform = client.add_artifact((__file_loc__ / "../../algorithm/pandas").as_posix())
     simple_transform = client.add_artifact(
-        (__file_loc__ / "../../../algorithm/pandas/simple/algorithms/transform").as_posix()
+        (__file_loc__ / "../../algorithm/pandas/algorithms/transform").as_posix()
     )
     simple_transform2 = client.add_artifact(
-        (__file_loc__ / "../../../algorithm/pandas/simple/algorithms/transform2").as_posix()
+        (__file_loc__ / "../../algorithm/pandas/algorithms/transform2").as_posix()
     )
-    simple_learn = client.add_artifact(
-        __file_loc__.as_posix(),
-        named_mantik_id="mantik/sklearn",
-    )
+    simple_learn = client.add_artifact(__file_loc__.as_posix())
     kmeans = client.add_artifact((__file_loc__ / "algorithms/simple").as_posix())
     with client.enter_session():
         trained_pipe, stats = client.train(
