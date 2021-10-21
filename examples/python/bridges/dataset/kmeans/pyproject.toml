@@ -1,14 +1,13 @@
 [tool.poetry]
 name = "mantik-bridge-dataset-kmeans"
 description = "Mantik bridge for kmeans dataset"
-version = "0.3.0-rc6"
+version = "v0.3.1-rc2"
 authors = ["Mantik Team <info@mantik.ai>"]
 homepage = "https://www.mantik.ai"
 
 [tool.poetry.dependencies]
 python = "~3.7.10"
-mantik = { path = "./../../../../../../core/python_sdk", develop = true }
-mnp = { path = "./../../../../../../core/mnp/mnppython", develop = true }
+mantik = { version = "^0.3.1rc2", allow-prereleases = true }
 numpy = "1.21.2"
 scikit-learn = "^0.24.2"
 

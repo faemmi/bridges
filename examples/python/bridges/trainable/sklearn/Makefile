@@ -1,6 +1,6 @@
 # Define the name of the bridge and its docker image
 NAME=sklearn
-MANTIK_VERSION=v0.3.0-rc6
+MANTIK_VERSION=$(shell poetry version -s)
 IMAGE_NAME=bridge.sklearn
 DOCKER_IMAGE_NAME=$(IMAGE_NAME):$(MANTIK_VERSION)
 
