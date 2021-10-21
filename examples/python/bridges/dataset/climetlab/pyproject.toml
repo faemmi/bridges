@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "mantik-climetlab-bridge"
+description = "Mantik bridge for CliMetLab"
+version = "v0.3.1-rc2"
+authors = ["Mantik Team <info@mantik.ai>"]
+homepage = "https://www.mantik.ai"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+mantik = { version = "^0.3.1rc2", allow-prereleases = true }
+climetlab = "*"
+climetlab-maelstrom-power-production = "0.1.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+
+[build-system]
+requires = ["poetry>=1.0.0"]
+
+[tool.pytest.ini_options]
+norecursedirs = "target"

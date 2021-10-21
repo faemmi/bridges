@@ -1,0 +1,9 @@
+name: kmeans
+bridge: mantik/dataset.kmeans
+kind: dataset
+# The type of the data
+type:
+  columns:
+    x: int32
+    y: int32
+    z: int32

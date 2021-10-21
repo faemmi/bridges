@@ -1,0 +1,12 @@
+name: power-production
+bridge: mantik/xarray
+kind: algorithm
+type:
+  input:
+    columns:
+      x: int32
+      y: int32
+      z: int32
+  output:
+    columns:
+      x: int32

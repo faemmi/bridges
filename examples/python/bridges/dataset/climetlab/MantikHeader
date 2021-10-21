@@ -1,0 +1,8 @@
+# MantikHeader for Simple Learn Bridge
+kind: bridge
+account: mantik
+name: climetlab
+suitable:
+  - dataset
+dockerImage: mantikai/bridge.climetlab
+protocol: 1
