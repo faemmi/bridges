@@ -4,5 +4,5 @@ account: mantik
 name: climetlab
 suitable:
   - dataset
-dockerImage: mantikai/bridge.climetlab
+dockerImage: mantikai/bridge.climetlab:v0.3.1-rc2
 protocol: 1

@@ -18,7 +18,6 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-"""Run sklearn.cluster.KMeans via mantik."""
 import pathlib
 
 import mantik
@@ -26,8 +25,10 @@ import mantik
 __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.Client("localhost", 8087) as client:
-    dataset = client.add_artifact(__file_loc__.as_posix())
-    simple_dataset = client.add_artifact((__file_loc__ / "datasets/simple").as_posix())
+    climetlab_bridge = client.add_artifact(__file_loc__.as_posix())
+    power_production_dataset = client.add_artifact(
+        (__file_loc__ / "datasets/power-production").as_posix()
+    )
     with client.enter_session():
-        result = client.get(simple_dataset, action_name="Get simple kmeans dataset")
+        result = client.get(power_production_dataset)
         print(result.bundle.value)

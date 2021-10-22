@@ -19,43 +19,36 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+import climetlab as cml
 import mantik
 import numpy as np
-from sklearn.datasets import make_blobs
-from sklearn.metrics.pairwise import pairwise_distances_argmin
-from sklearn.model_selection import train_test_split
+import utils
+import xarray as xr
 
 
 def get(meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
-    result = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    wind_plant_id = meta.get("wind_plant_id")
+    dataset = _load_dataset(wind_plant_id)
+
+    dates = utils.get_dates_as_strings(dataset)
+    production = _get_production_values(dataset)
+
+    result = _convert_to_columns(dates, production)
+
     return mantik.types.Bundle(value=result)
 
-    centers = np.sort(np.array([[1, 1], [0, 0], [-1, -1]]), axis=0)
-    data, _ = make_blobs(n_samples=100, n_features=2, centers=centers, cluster_std=0.95)
-    label = pairwise_distances_argmin(data, centers)
 
-    train_data, test_data, train_label, test_label = train_test_split(data, label)
+def _load_dataset(wind_plant_id: str) -> xr.Dataset:
+    source = cml.load_dataset("maelstrom-power-production", wind_plant_id=wind_plant_id)
+    return source.to_xarray()
 
-    ds = """
-    {
-        "columns":
-        {
-            "coordinates":
-            {
-                "type": "tensor",
-                "shape": [2],
-                "componentType": "float64"
-            }
-        }
-    }
-    """
-    data_type = mantik.types.DataType.from_json(ds)
-    # TODO (mq): This reshaping is unintuitive
-    train_bundle = mantik.types.Bundle(data_type, train_data.reshape(-1, 1, 2).tolist())
-    test_bundle = mantik.types.Bundle(data_type, test_data.reshape(-1, 1, 2).tolist())
 
-    data_type = meta.get("data_type")
-    if data_type == "training":
-        return train_bundle
-    elif data_type == "prediction":
-        return test_bundle
+def _get_production_values(data: xr.Dataset) -> np.ndarray:
+    return data["production"].values.astype(float).flatten()
+
+
+def _convert_to_columns(*columns):
+    lengths = set(list(len(column) for column in columns))
+    if len(lengths) != 1:
+        raise ValueError("Input objects must have equal length")
+    return [[*column] for column in zip(*columns)]
