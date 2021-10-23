@@ -1,11 +1,18 @@
 import algorithm
-import mantik.types
+import mantik
+import utils
 
 
-def test_apply():
-    bundle = mantik.types.Bundle(value=[[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+def test_apply(dates, production):
+    values = utils.convert_to_columns(dates, production)
+    bundle = mantik.types.Bundle(value=values)
     meta = mantik.types.MetaVariables()
-    expected = [[6], [15], [24]]
+
+    datetimes = utils.convert_isoformat_dates_to_datetime(dates)
+    time_of_day = utils.get_time_of_day(datetimes)
+    time_of_year = utils.get_time_of_year(datetimes)
+
+    expected = utils.convert_to_columns(dates, production, time_of_day, time_of_year)
 
     result = algorithm.apply(bundle, meta)
 

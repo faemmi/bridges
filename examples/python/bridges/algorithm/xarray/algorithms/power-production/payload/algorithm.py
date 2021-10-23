@@ -20,8 +20,18 @@
 # a commercial license.
 #
 import mantik
+import utils
 
 
 def apply(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
-    value = [[sum(row)] for row in bundle.value]
-    return mantik.types.Bundle(value=value)
+    dates, production = utils.unpack_bundle(bundle)
+
+    datetimes = utils.convert_isoformat_dates_to_datetime(dates)
+    time_of_day = utils.get_time_of_day(datetimes)
+    time_of_year = utils.get_time_of_year(datetimes)
+
+    result = utils.convert_to_columns(
+        dates[:10], production[:10], time_of_day[:10], time_of_year[:10]
+    )
+
+    return mantik.types.Bundle(value=result)

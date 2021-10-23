@@ -26,28 +26,24 @@ import mantik
 __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.Client("localhost", 8087) as client:
-    dataset = client.add_artifact((__file_loc__ / "../../dataset/kmeans").as_posix())
-    simple_dataset = client.add_artifact(
-        (__file_loc__ / "../../dataset/kmeans/datasets/simple").as_posix()
+    climetlab_bridge = client.add_artifact((__file_loc__ / "../../dataset/climetlab").as_posix())
+    power_production_dataset = client.add_artifact(
+        (__file_loc__ / "../../dataset/climetlab/datasets/power-production").as_posix()
     )
-    transform = client.add_artifact((__file_loc__ / "../../algorithm/pandas").as_posix())
-    simple_transform = client.add_artifact(
-        (__file_loc__ / "../../algorithm/pandas/algorithms/transform").as_posix()
+    xarray_bridge = client.add_artifact((__file_loc__ / "../../algorithm/xarray").as_posix())
+    transform = client.add_artifact(
+        (__file_loc__ / "../../algorithm/xarray/algorithms/power-production").as_posix()
     )
-    simple_transform2 = client.add_artifact(
-        (__file_loc__ / "../../algorithm/pandas/algorithms/transform2").as_posix()
+    sklearn_bridge = client.add_artifact(__file_loc__.as_posix())
+    gradientboosting = client.add_artifact(
+        (__file_loc__ / "algorithms/power-production").as_posix()
     )
-    simple_learn = client.add_artifact(__file_loc__.as_posix())
-    kmeans = client.add_artifact((__file_loc__ / "algorithms/simple").as_posix())
+
     with client.enter_session():
-        trained_pipe, stats = client.train(
-            pipeline=[simple_transform, simple_transform2, kmeans],
-            data=simple_dataset,
-            action_name="Training",
-        )
-        kmeans_trained = client.tag(trained_pipe, "any_ref")
-        test_result = client.apply(
-            trained_pipe, simple_dataset, action_name="Testing apply of model"
+        model_pipeline, stats = client.train(
+            pipeline=[transform, gradientboosting],
+            data=power_production_dataset,
         )
         print(f"Stats: {stats.bundle.value}")
-        print(f"Apply result: {test_result.bundle.value}")
+        result = client.apply(model_pipeline, power_production_dataset)
+        print(f"Apply result: {result.bundle.value}")

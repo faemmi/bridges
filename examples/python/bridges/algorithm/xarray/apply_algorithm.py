@@ -26,25 +26,12 @@ import mantik
 __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.Client("localhost", 8087) as client:
-    dataset = client.add_artifact(
-        (__file_loc__ / "../../dataset/kmeans").as_posix(),
-        named_mantik_id="mantik/dataset.kmeans",
+    climetlab_bridge = client.add_artifact((__file_loc__ / "../../dataset/climetlab").as_posix())
+    power_production_dataset = client.add_artifact(
+        (__file_loc__ / "../../dataset/climetlab/datasets/power-production").as_posix()
     )
-    simple_dataset = client.add_artifact(
-        (__file_loc__ / "../../dataset/kmeans/datasets/simple").as_posix(),
-    )
-    pandas = client.add_artifact(
-        __file_loc__.as_posix(),
-        named_mantik_id="mantik/pandas",
-    )
-    transform = client.add_artifact(
-        (__file_loc__ / "algorithms/transform").as_posix(),
-        named_mantik_id="mantik/pandas.transform",
-    )
-    transform2 = client.add_artifact(
-        (__file_loc__ / "algorithms/transform2").as_posix(),
-        named_mantik_id="mantik/pandas.transform",
-    )
+    xarray_bridge = client.add_artifact(__file_loc__.as_posix())
+    transform = client.add_artifact((__file_loc__ / "algorithms/power-production").as_posix())
     with client.enter_session():
-        result = client.apply([transform, transform2], data=simple_dataset)
+        result = client.apply([transform], data=power_production_dataset)
         print(result.bundle.value)

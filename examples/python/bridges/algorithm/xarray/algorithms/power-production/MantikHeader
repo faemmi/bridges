@@ -4,9 +4,11 @@ kind: algorithm
 type:
   input:
     columns:
-      x: int32
-      y: int32
-      z: int32
+      date: string
+      power: float64
   output:
     columns:
-      x: int32
+      date: string
+      power: float64
+      time_of_day: float64
+      time_of_year: float64

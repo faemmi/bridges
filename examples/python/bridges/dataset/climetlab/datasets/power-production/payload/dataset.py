@@ -33,7 +33,7 @@ def get(meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
     dates = utils.get_dates_as_strings(dataset)
     production = _get_production_values(dataset)
 
-    result = _convert_to_columns(dates, production)
+    result = utils.convert_to_columns(dates, production)
 
     return mantik.types.Bundle(value=result)
 
@@ -45,10 +45,3 @@ def _load_dataset(wind_plant_id: str) -> xr.Dataset:
 
 def _get_production_values(data: xr.Dataset) -> np.ndarray:
     return data["production"].values.astype(float).flatten()
-
-
-def _convert_to_columns(*columns):
-    lengths = set(list(len(column) for column in columns))
-    if len(lengths) != 1:
-        raise ValueError("Input objects must have equal length")
-    return [[*column] for column in zip(*columns)]

@@ -1,12 +1,9 @@
-import typing as t
-
-import numpy as np
-import xarray as xr
+import mantik
 
 
-def get_dates_as_strings(data: xr.Dataset) -> t.List[str]:
-    dates = data.coords["time"].values
-    return [np.datetime_as_string(date, unit="s") for date in dates]
+def unpack_bundle(bundle: mantik.types.Bundle) -> tuple:
+    columns = len(bundle.value[0])
+    return tuple(tuple(row[i] for row in bundle.value) for i in range(columns))
 
 
 def convert_to_columns(*columns):

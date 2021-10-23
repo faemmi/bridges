@@ -19,38 +19,34 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
-import pickle
-
-import mantik.types
-import numpy as np
-from sklearn.cluster import KMeans
-
-
-MODEL_FILE = "model.pickle"
+import mantik
+import utils
+from sklearn.ensemble import GradientBoostingRegressor
 
 
 def train(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mantik.types.Bundle:
-    # return mantik.types.Bundle(value=bundle.value)
+    _, production, time_of_day, time_of_year = utils.unpack_bundle(bundle)
 
-    coordinates = bundle.flat_column("coordinates")
-    learn_data = np.array(coordinates)
-    random_state = meta.get("random_state")
-    meta = {k: meta.get(k) for k in meta.keys()}
-    meta["random_state"] = int(random_state) if random_state != "null" else None
-    model = KMeans(**meta).fit(learn_data)
-    with open(MODEL_FILE, "wb") as f:
-        pickle.dump(model, f)
-    value = [[model.cluster_centers_.tolist(), model.inertia_, model.n_iter_]]
-    return mantik.types.Bundle(value=value)
+    x = utils.prepare_x_values(time_of_day, time_of_year)
+
+    model = GradientBoostingRegressor(**meta).fit(x, production)
+    utils.save_model(model)
+
+    score = model.score(x, production)
+
+    result = utils.convert_to_columns([score])
+    return mantik.types.Bundle(value=result)
 
 
 def try_init():
-    with (open(MODEL_FILE, "rb")) as f:
-        return pickle.load(f)
+    return utils.load_model()
 
 
 def apply(model, bundle: mantik.types.Bundle) -> mantik.types.Bundle:
-    coordinates = bundle.flat_column("coordinates")
-    data = np.array(coordinates)
-    result = model.predict(data)
-    return mantik.types.Bundle.from_flat_column(result.tolist())
+    dates, _, time_of_day, time_of_year = utils.unpack_bundle(bundle)
+
+    x = utils.prepare_x_values(time_of_day, time_of_year)
+    prediction = model.predict(x)
+
+    result = utils.convert_to_columns(dates, prediction)
+    return mantik.types.Bundle(value=result)
