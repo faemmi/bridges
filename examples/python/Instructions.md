@@ -87,25 +87,20 @@ You will need
      - algorithm
      - trainable
 5. Write the `main.py`, `<kind>_wrapper.py`, and payloads (for details, see below).
-   Note: mantik will put all the files located in the payload into your bridge
+
+   **Note:** mantik will put all the files located in the payload into your bridge
    when you execute it. As a result, any other utility functions or modules must
    be located in the payload to be used in the bridge.
-6. Build the docker image of the bridge
+7. Build the docker image of the bridge
    ```commandline
    make docker
    ```
-7. Write a Python script to execute the bridge (see each bridge kind example below) and run it.
+8. Write a Python script to execute the bridge (see each bridge kind example below) and run it.
 
-**Note:** As long as a DataSet bridge does not exist, the production
-example has to include the `data` dir (it's included by the `Dockerfile.python_bridge`).
-The simple example, however, does **not** need to include the data directory. Hence, when
-building the simple bridge, the two lines including the data directory have to be
-commented out.
+### `DataSet` bridges
 
-### DataSet bridges
-
-1. For the `DataSetWrapper`, implement all methods of `mantik.bridge.DataSet`. Here, the wrapper additionally
-   has to implement the get function of the payload. This can e.g. be achieved via
+1. For the `DataSetWrapper`, implement all methods of `mantik.bridge.DataSet`. Here, one option is
+   to implement a `get` function in the payload. This can e.g. be achieved via
    ```Python
    import mantik
 
@@ -138,12 +133,119 @@ commented out.
    Reminder: utility functions or modules must be located in the payload so that they can
    be used in the `dataset.get` method.
 
+### `Algorithm` bridges
+
+1. For the `AlgorithmWrapper`, implement all methods of `mantik.bridge.Algorithm` or `mantik.bridge.TrainableAlgorithm`,
+   depending on whether you just want to implement data transformation or training of a model as well .
+   Here, one option is to implement a `apply` and/or `train` function in the payload. This can e.g. be achieved via
+   - `Algorithm`:
+     ```Python
+
+     import mantik
+
+
+     # Wraps the supplied algorithm
+     class AlgorithmWrapper(mantik.bridge.Algorithm):
+         def __init__(self, mantikheader: mantik.types.MantikHeader):
+             import sys
+
+             sys.path.append(mantikheader.payload_dir)
+             import algorithm
+
+             self.apply_func = algorithm.apply
+             self.mantikheader = mantikheader
+
+         def apply(self, data: mantik.types.Bundle) -> mantik.types.Bundle:
+             return self.apply_func(data, self.mantikheader.meta_variables)
+     ```
+   - `TrainableAlgorithm`:
+      ```Python
+      import os
+
+      import mantik
+
+
+      # Wraps the supplied algorithm
+      class AlgorithmWrapper(mantik.bridge.TrainableAlgorithm):
+           def __init__(self, mantikheader: mantik.types.MantikHeader):
+              import sys
+
+              sys.path.append(mantikheader.payload_dir)
+              import algorithm
+
+              self.train_func = algorithm.train
+              self.try_init_func = algorithm.try_init
+              self.apply_func = algorithm.apply
+              self.is_trained_status = False
+              self.model = None
+              self.training_stats_result = None
+              self.mantikheader = mantikheader
+
+          @property
+          def is_trained(self) -> bool:
+              """Return whether the bridge has a trained model."""
+              return self.is_trained_status
+
+          @property
+          def trained_data_dir(self) -> str:
+              """Return the directory where the trained model is located."""
+              return self.mantikheader.payload_dir
+
+          def train(self, bundle) -> mantik.types.Bundle:
+              """Train the bridge, i.e. a model."""
+              old_pwd = os.getcwd()
+              os.chdir(self.mantikheader.payload_dir)
+              try:
+                  stats = self.train_func(bundle, self.mantikheader.meta_variables)
+                  # This should now work and not catch
+                  self.model = self.try_init_func()
+                  print("Reinitialized after successful learn")
+                  self.training_stats_result = stats
+                  self.is_trained_status = True
+                  return stats
+              finally:
+                  os.chdir(old_pwd)
+
+          @property
+          def training_stats(self) -> mantik.types.Bundle:
+              """Return the stats of the training step."""
+              return self.training_stats_result
+
+          def try_init_catching(self):
+              """Initialize the bridge for applying the model.
+
+              The model is loaded here to be available in the  apply  function.
+
+              """
+              old_pwd = os.getcwd()
+              os.chdir(self.mantikheader.payload_dir)
+              try:
+                  self.model = self.try_init_func()
+                  print("Successfully loaded Model...")
+                  self.is_trained_status = True
+              except Exception as e:
+                  print(f"Could not load Model {e}")
+              finally:
+                  os.chdir(old_pwd)
+
+          def apply(self, data) -> mantik.types.Bundle:
+              """Apply the model, i.e. create a prediction."""
+              if not self.is_trained_status:
+                  raise Exception("Not trained")
+              return self.apply_func(self.model, data)
+      ```
+2. Write the payload. For a dataset, it must include a `dataset.py`/`algorithm.py`
+   file that has a `get`/`apply`/`train` method (or as you define it in the wrapper).
+
+   **Note:** utility functions or modules must be located in the payload so that they can
+   be used in the `dataset.get` method.
+
 ## Running the bridge
 1. Start the mantik engine
    ```commandline
    docker-compose up
    ```
-2. In the `algorithms/<algorithm name>/MantikHeader`, insert the correct bridge name for
+2. In the `datasets/<dataset name>/MantikHeader` or `algorithms/<algorithm name>/MantikHeader`, insert the correct bridge name for
    the  `bridge` field.
 3. Run the `get_dataset.py`/`apply_algorithm.py`/`train_algorithm.py` script
    ```commandline
