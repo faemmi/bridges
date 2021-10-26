@@ -39,7 +39,7 @@ def train(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mant
 
 
 def try_init():
-    return utils.load_model()
+    utils.load_model()
 
 
 def apply(model, bundle: mantik.types.Bundle) -> mantik.types.Bundle:
@@ -48,5 +48,7 @@ def apply(model, bundle: mantik.types.Bundle) -> mantik.types.Bundle:
     x = utils.prepare_x_values(time_of_day, time_of_year)
     prediction = model.predict(x)
 
-    result = utils.convert_to_columns(dates, prediction)
+    # Data fetching in Python does not yet support streaming, hence not all
+    # data can be retrieved.
+    result = utils.convert_to_columns(dates[:10], prediction[:10])
     return mantik.types.Bundle(value=result)

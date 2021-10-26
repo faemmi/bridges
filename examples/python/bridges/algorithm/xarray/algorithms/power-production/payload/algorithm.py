@@ -30,8 +30,6 @@ def apply(bundle: mantik.types.Bundle, meta: mantik.types.MetaVariables) -> mant
     time_of_day = utils.get_time_of_day(datetimes)
     time_of_year = utils.get_time_of_year(datetimes)
 
-    result = utils.convert_to_columns(
-        dates[:10], production[:10], time_of_day[:10], time_of_year[:10]
-    )
+    result = utils.convert_to_columns(dates, production, time_of_day, time_of_year)
 
     return mantik.types.Bundle(value=result)

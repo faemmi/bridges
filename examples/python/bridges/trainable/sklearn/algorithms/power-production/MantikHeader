@@ -1,4 +1,4 @@
-name: kmeans
+name: power-production
 bridge: mantik/sklearn
 kind: trainable
 # The type of training data
