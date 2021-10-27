@@ -19,9 +19,12 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+import logging
 import os
 
 import mantik
+
+logger = logging.getLogger(__name__)
 
 
 # Wraps the supplied algorithm
@@ -56,7 +59,7 @@ class AlgorithmWrapper(mantik.bridge.TrainableAlgorithm):
             stats = self.train_func(bundle, self.mantikheader.meta_variables)
             # This should now work and not catch
             self.model = self.try_init_func()
-            print("Reinitialized after successful learn")
+            logger.debug("Reinitialized after successful learn")
             self.training_stats_result = stats
             self.is_trained_status = True
             return stats
@@ -72,10 +75,10 @@ class AlgorithmWrapper(mantik.bridge.TrainableAlgorithm):
         os.chdir(self.mantikheader.payload_dir)
         try:
             self.model = self.try_init_func()
-            print("Successfully loaded Model...")
+            logger.debug("Successfully loaded model...")
             self.is_trained_status = True
         except Exception as e:
-            print(f"Could not load Model {e}")
+            logger.debug(f"Could not load model: {e}")
         finally:
             os.chdir(old_pwd)
 
