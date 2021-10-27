@@ -27,27 +27,29 @@ __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.Client("localhost", 8087) as client:
     dataset = client.add_artifact((__file_loc__ / "../../dataset/sklearn").as_posix())
+    pandas = client.add_artifact((__file_loc__ / "../../algorithm/pandas").as_posix())
+    sklearn = client.add_artifact(__file_loc__.as_posix())
+
     simple_dataset = client.add_artifact(
         (__file_loc__ / "../../dataset/sklearn/datasets/simple").as_posix()
     )
-    transform = client.add_artifact((__file_loc__ / "../../algorithm/pandas").as_posix())
-    simple_transform = client.add_artifact(
+    transform = client.add_artifact(
         (__file_loc__ / "../../algorithm/pandas/algorithms/transform").as_posix()
     )
-    simple_transform2 = client.add_artifact(
+    transform2 = client.add_artifact(
         (__file_loc__ / "../../algorithm/pandas/algorithms/transform2").as_posix()
     )
-    simple_learn = client.add_artifact(__file_loc__.as_posix())
     kmeans = client.add_artifact((__file_loc__ / "algorithms/simple").as_posix())
+
     with client.enter_session():
         trained_pipe, stats = client.train(
-            pipeline=[simple_transform, simple_transform2, kmeans],
+            pipeline=[transform, transform2, kmeans],
             data=simple_dataset,
             action_name="Training",
         )
-        kmeans_trained = client.tag(trained_pipe, "any_ref")
-        test_result = client.apply(
-            trained_pipe, simple_dataset, action_name="Testing apply of model"
-        )
         print(f"Stats: {stats.bundle.value}")
-        print(f"Apply result: {test_result.bundle.value}")
+
+        result = client.apply(
+            trained_pipe, simple_dataset, action_name="Apply model"
+        )
+        print(f"Apply result: {result.bundle.value}")

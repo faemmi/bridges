@@ -242,9 +242,54 @@ You will need
    ```commandline
    docker-compose up
    ```
-2. In the `datasets/<dataset name>/MantikHeader` or `algorithms/<algorithm name>/MantikHeader`, insert the correct bridge name for
-   the  `bridge` field.
-3. Run the `get_dataset.py`/`apply_algorithm.py`/`train_algorithm.py` script
+2. In the `datasets/<dataset name>/MantikHeader` or `algorithms/<algorithm name>/MantikHeader`,
+   insert the correct bridge name for the  `bridge` field.
+3. Write a script named `execute.py` describing what bridges to execute or combine to a pipeline
+   ```Python
+   import pathlib
+
+   import mantik
+
+   __file_loc__ = pathlib.Path(__file__).parent
+
+   with mantik.engine.Client("localhost", 8087) as client:
+   # Submit all bridges to the engine
+       dataset = client.add_artifact((__file_loc__ / "../../dataset/sklearn").as_posix())
+       pandas = client.add_artifact((__file_loc__ / "../../algorithm/pandas").as_posix())
+       sklearn = client.add_artifact(__file_loc__.as_posix())
+
+       # Submit all payloads for each bridge to the engine.
+       simple_dataset = client.add_artifact(
+           (__file_loc__ / "../../dataset/sklearn/datasets/simple").as_posix()
+       )
+       transform = client.add_artifact(
+           (__file_loc__ / "../../algorithm/pandas/algorithms/transform").as_posix()
+       )
+       transform2 = client.add_artifact(
+           (__file_loc__ / "../../algorithm/pandas/algorithms/transform2").as_posix()
+       )
+       kmeans = client.add_artifact((__file_loc__ / "algorithms/simple").as_posix())
+
+       # Start a mantik session.
+       with client.enter_session():
+           # Train the model on the given dataset.
+           # Before training the kmeans model, the two tansform actions will
+           # be performed on the dataset.
+           trained_pipe, stats = client.train(
+               pipeline=[transform, transform2, kmeans],
+               data=simple_dataset,
+           )
+           print(f"Stats: {stats.bundle.value}")
+
+           # Apply the kmeas model on a given dataset.
+           result = client.apply(trained_pipe, simple_dataset)
+           print(f"Apply result: {result.bundle.value}")
+   ```
+5. Run the `execute.py` script
    ```commandline
-   poetry run python <script name>.py
+   poetry run python execute.py
+   ```
+   or
+   ```commandline
+   make integration-test
    ```
