@@ -26,9 +26,9 @@ import mantik
 __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.Client("localhost", 8087) as client:
-    dataset = client.add_artifact((__file_loc__ / "../../dataset/kmeans").as_posix())
+    dataset = client.add_artifact((__file_loc__ / "../../dataset/sklearn").as_posix())
     simple_dataset = client.add_artifact(
-        (__file_loc__ / "../../dataset/kmeans/datasets/simple").as_posix()
+        (__file_loc__ / "../../dataset/sklearn/datasets/simple").as_posix()
     )
     transform = client.add_artifact((__file_loc__ / "../../algorithm/pandas").as_posix())
     simple_transform = client.add_artifact(

@@ -8,22 +8,22 @@ You will need
 ## Creating a bridge
 1. Start by copying an existing example and keep in mind you will need the following files:
    - a `.dockerignore` file to exclude large files to keep your Docker image small
-   - a wrapper file for your bridge kind from `mantik.bridge.kinds` (e.g. `algorithm_wrapper.py`)
-   - a `main.py` file that tells the mantik engine how to start your bridge that looks like
-     ```Python
-     import mantik
+   - located in the `src/` subdirectory:
+     - a wrapper file for your bridge kind from `mantik.bridge.kinds` (e.g. `algorithm_wrapper.py`)
+     - a `main.py` file that tells the mantik engine how to start your bridge that looks like
+       ```Python
+       import mantik
 
-     from algorithm_wrapper import AlgorithmWrapper
-
-
-     def create_algorithm(mantikheader: mantik.types.MantikHeader):
-         algorithm = AlgorithmWrapper(mantikheader)
-         return algorithm
+       from algorithm_wrapper import AlgorithmWrapper
 
 
-     mantik.bridge.start_mnp_bridge(create_algorithm, "Pandas Bridge")
+       def create_algorithm(mantikheader: mantik.types.MantikHeader):
+           algorithm = AlgorithmWrapper(mantikheader)
+           return algorithm
 
-     ```
+
+       mantik.bridge.start_mnp_bridge(create_algorithm, "Pandas Bridge")
+       ```
    - a `Makefile` for building the Docker image (see below)
    - a `MantikHeader` file to define your bridge so that mantik can understand it
      (for details see below)
@@ -31,21 +31,18 @@ You will need
      dependencies (i.e. third-party packages it implements)
 2. A blueprint of a Makefile looks as follows
    ```bash
-   # Define the name of the bridge and its docker image
-   NAME=<bridge name>
-   MANTIK_VERSION=<mantik version the bridge was designed for>
-   IMAGE_NAME=bridge.<bridge name>
-   # AVOID CHANGES BELOW HERE
-   DOCKER_IMAGE_NAME=$(IMAGE_NAME):$(MANTIK_VERSION)
+   # Define the name of the bridge and its docker image.
+   NAME = sklearn
+   IMAGE_NAME = bridge.sklearn
 
    # Include all other necessary Makefiles.
-   PYTHON_SCRIPTS=./../../../scripts
-   include $(PYTHON_SCRIPTS)/integrate.Makefile
+   ROOT = ./../../../../
+   include $(ROOT)/scripts/python/integrate.Makefile
    ```
    In the Makefile, define the
    - name of the bridge (`NAME=<bridge name>`)
-   - name of the Docker image of the bridge (`DOCKER_IMAGE_NAME=bridge.<docker image name>`)
-   **Note:** Avoid adapting any of the other variables
+   - name of the Docker image of the bridge (`IMAGE_NAME=bridge.<docker image name>`)
+   **Note:** Avoid adapting any of the other variables.
 3. In the `pyproject.toml`, define all package information dependencies and 3rd-party dependencies
    ```toml
    [tool.poetry]
@@ -71,7 +68,7 @@ You will need
    ```
    **Note:** Each time when you update a dependency, you need to run `poetry lock` to
    update the `poetry.lock` file, which is used by poetry to install the dependencies.
-4. In the `MantikHeader` (in `bridges/<bridge type>/<application>/MantikHeader`) define the bridge properties
+4. In the `MantikHeader` (in `<bridge type>/<application>/MantikHeader`) define the bridge properties
    that are relevant for the mantik engine
    ```YAML
    kind: bridge

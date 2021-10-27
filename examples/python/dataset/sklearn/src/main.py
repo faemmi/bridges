@@ -20,12 +20,19 @@
 # a commercial license.
 #
 import mantik
-from dataset_wrapper import DataSetWrapper
 
 
-def create_dataset(mantikheader: mantik.types.MantikHeader):
-    dataset = DataSetWrapper(mantikheader)
-    return dataset
+# Wraps the supplied DataSet
+class DataSetWrapper(mantik.bridge.DataSet):
+    def __init__(self, mantikheader: mantik.types.MantikHeader):
+        # TODO: I am pretty sure there is a nicer way to do so
+        import sys
 
+        sys.path.append(mantikheader.payload_dir)
+        import dataset
 
-mantik.bridge.start_mnp_bridge(create_dataset, "kmeans DataSet Bridge")
+        self.get_func = dataset.get
+        self.mantikheader = mantikheader
+
+    def get(self) -> mantik.types.Bundle:
+        return self.get_func(self.mantikheader.meta_variables)
