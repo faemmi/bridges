@@ -1,0 +1,26 @@
+name: power-production
+bridge: mantik/sklearn
+kind: trainable
+# The type of training data
+trainingType:
+  columns:
+    date: string
+    power: float64
+    time_of_day: float64
+    time_of_year: float64
+# The type for statistic after training
+statType:
+  columns:
+    score: float64
+# The type when trained
+type:
+  input:
+    columns:
+      date: string
+      power: float64
+      time_of_day: float64
+      time_of_year: float64
+  output:
+    columns:
+      dates: string
+      power: float64

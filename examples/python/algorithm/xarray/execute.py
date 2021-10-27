@@ -30,20 +30,8 @@ with mantik.engine.Client("localhost", 8087) as client:
     power_production_dataset = client.add_artifact(
         (__file_loc__ / "../../dataset/climetlab/datasets/power-production").as_posix()
     )
-    xarray_bridge = client.add_artifact((__file_loc__ / "../../algorithm/xarray").as_posix())
-    transform = client.add_artifact(
-        (__file_loc__ / "../../algorithm/xarray/algorithms/power-production").as_posix()
-    )
-    sklearn_bridge = client.add_artifact(__file_loc__.as_posix())
-    gradientboosting = client.add_artifact(
-        (__file_loc__ / "algorithms/power-production").as_posix()
-    )
-
+    xarray_bridge = client.add_artifact(__file_loc__.as_posix())
+    transform = client.add_artifact((__file_loc__ / "algorithms/power-production").as_posix())
     with client.enter_session():
-        model_pipeline, stats = client.train(
-            pipeline=[transform, gradientboosting],
-            data=power_production_dataset,
-        )
-        print(f"Stats: {stats.bundle.value}")
-        result = client.apply(model_pipeline, power_production_dataset)
-        print(f"Apply result: {result.bundle.value}")
+        result = client.apply([transform], data=power_production_dataset)
+        print(result.bundle.value)

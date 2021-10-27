@@ -1,0 +1,12 @@
+name: power-production
+bridge: mantik/climetlab
+kind: dataset
+metaVariables:
+  - name: wind_plant_id
+    type: string
+    value: wald9
+# The type of the data
+type:
+  columns:
+    date: string
+    power: float64
