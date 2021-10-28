@@ -1,5 +1,12 @@
+import pathlib
+import sys
+
+import mantik
+
+__file_loc__ = pathlib.Path(__file__).parent
+sys.path.append((__file_loc__ / "../payload").as_posix())
+
 import dataset
-import mantik.types
 
 
 def test_apply():
