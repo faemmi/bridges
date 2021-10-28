@@ -3,7 +3,10 @@ MAKEFLAGS += --no-builtin-rules
 # Set the Docker image tag and create the final Docker image name
 MANTIK_VERSION = $(shell poetry version -s)
 
-build:
+install:
+	poetry install
+
+build: install clean
 	mkdir -p target
 	rsync -a --prune-empty-dirs \
 	    --include '*.py' \
@@ -12,15 +15,15 @@ build:
 	    src/ target/
 	cp poetry.lock pyproject.toml target/
 
+run: install
+	poetry run python run.py
+
+test: install
+	poetry run pytest
+
+integration-test: run
+
 clean:
 	rm -rf target
 
-test:
-	poetry install
-	poetry run pytest
-
-integration-test:
-	poetry install
-	poetry run python execute.py
-
-.PHONY: build clean test integration-test
+.PHONY: build run test integration-test clean

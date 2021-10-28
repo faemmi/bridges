@@ -244,7 +244,7 @@ You will need
    ```
 2. In the `datasets/<dataset name>/MantikHeader` or `algorithms/<algorithm name>/MantikHeader`,
    insert the correct bridge name for the  `bridge` field.
-3. Write a script named `execute.py` describing what bridges to execute or combine to a pipeline
+3. Write a script named `run.py` describing what bridges to execute or combine to a pipeline
    ```Python
    import pathlib
 
@@ -285,11 +285,11 @@ You will need
            result = client.apply(trained_pipe, simple_dataset)
            print(f"Apply result: {result.bundle.value}")
    ```
-5. Run the `execute.py` script
+5. Run the `run.py` script
    ```commandline
-   poetry run python execute.py
+   poetry run python run.py
    ```
    or
    ```commandline
-   make integration-test
+   make run
    ```

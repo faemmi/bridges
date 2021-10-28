@@ -9,7 +9,7 @@ MANTIK_ROOT ?=
 install:
 	poetry install
 
-build: install
+build: install clean
 	mkdir -p target
 	rsync -a --prune-empty-dirs \
 	    --include '*.py' \
@@ -27,16 +27,15 @@ build: install
 	sed -i 's/".*mnppython"/"\.\/mnppython"/' target/poetry.lock target/pyproject.toml
 	sed -i 's/".*mnppython"/"\.\/..\/mnppython"/' target/python_sdk/poetry.lock target/python_sdk/pyproject.toml
 
-execute: install
-	poetry run python execute.py
+run: install
+	poetry run python run.py
 
 test: install
 	poetry run pytest
 
-integration-test: install
-	poetry run python execute.py
+integration-test: run
 
 clean:
 	rm -rf target
 
-.PHONY: build execute clean test integration-test
+.PHONY: build run test integration-test clean

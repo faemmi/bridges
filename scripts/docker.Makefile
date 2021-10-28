@@ -25,7 +25,7 @@ else
 	DOCKER_FILE_ARGUMENT = -f $(DOCKER_FILE)
 endif
 
-docker: | build docker-unchecked
+docker: build docker-unchecked
 
 docker-unchecked:
 	@echo "IMAGE_FULL_NAME=${IMAGE_FULL_NAME}"
