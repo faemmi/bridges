@@ -7,3 +7,6 @@
 # mantik files
 **/target/
 *.pickle
+
+# Singularity files
+*.sif
