@@ -4,3 +4,4 @@ ROOT = ${SELF_DIR}/../../
 DOCKER_FILE = $(ROOT)/scripts/python/bridge.Dockerfile
 include $(ROOT)/scripts/python/bridge-dev.Makefile
 include $(ROOT)/scripts/docker.Makefile
+include $(ROOT)/scripts/singularity.Makefile
