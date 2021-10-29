@@ -7,7 +7,7 @@
 DOCKER ?= docker
 DOCKER_IMAGE_NAME = $(IMAGE_NAME):$(MANTIK_VERSION)
 DOCKER_REPO ?= mantikai
-IMAGE_FULL_NAME = $(DOCKER_REPO)/$(DOCKER_IMAGE_NAME)
+DOCKER_IMAGE_FULL_NAME = $(DOCKER_REPO)/$(DOCKER_IMAGE_NAME)
 
 
 # Credentials for publishing the image
@@ -28,8 +28,8 @@ endif
 docker: clean build docker-unchecked
 
 docker-unchecked:
-	@echo "IMAGE_FULL_NAME=${IMAGE_FULL_NAME}"
-	$(DOCKER) build $(DOCKER_FILE_ARGUMENT) $(DOCKER_EXTRA_ARGS) -t $(IMAGE_FULL_NAME) .
+	# Building Docker image $(DOCKER_IMAGE_FULL_NAME)
+	$(DOCKER) build $(DOCKER_FILE_ARGUMENT) $(DOCKER_EXTRA_ARGS) -t $(DOCKER_IMAGE_FULL_NAME) .
 
 docker-login:
 	@# Trick to not show the password
@@ -41,6 +41,6 @@ docker-login:
 	@rm -r target/
 
 docker-publish: docker-login
-	$(DOCKER) push $(IMAGE_FULL_NAME)
+	$(DOCKER) push $(DOCKER_IMAGE_FULL_NAME)
 
 .PHONY: docker docker-unchecked docker-login docker-publish
