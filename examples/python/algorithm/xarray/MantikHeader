@@ -4,5 +4,5 @@ account: mantik
 name: xarray
 suitable:
   - algorithm
-dockerImage: mantikai/bridge.xarray
+dockerImage: mantikai/bridge.xarray:v0.3.1-rc2
 protocol: 1
