@@ -1,5 +1,6 @@
 # Set local mantik core repo path
-MANTIK_ROOT ?= /home/fabian/work/mantik/core
+MANTIK_ROOT ?=
+
 build: install clean
 	mkdir -p target
 	# Copy bridge files to target
