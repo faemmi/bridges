@@ -88,11 +88,15 @@ You will need
    **Note:** mantik will put all the files located in the payload into your bridge
    when you execute it. As a result, any other utility functions or modules must
    be located in the payload to be used in the bridge.
-7. Build the docker image of the bridge
+6. Build the docker image of the bridge
    ```commandline
    make docker
    ```
-8. Write a Python script to execute the bridge (see each bridge kind example below) and run it.
+7. Write a Python script named `run.py` to execute the bridge (see each bridge kind example below) and run it via
+   ```
+   make run
+   ```
+   **Note:** Using `make` to run the script will reduce the payload size for the bridges.
 
 ### `DataSet` bridges
 
@@ -293,3 +297,4 @@ You will need
    ```commandline
    make run
    ```
+   **Note:** It is recommended to use `make` to run the script to reduce payload sizes.
