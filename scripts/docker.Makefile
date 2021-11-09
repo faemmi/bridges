@@ -28,7 +28,7 @@ endif
 docker: clean build docker-unchecked
 
 docker-unchecked:
-	# Building Docker image $(DOCKER_IMAGE_FULL_NAME)
+	# Build Docker image $(DOCKER_IMAGE_FULL_NAME)
 	$(DOCKER) build $(DOCKER_FILE_ARGUMENT) $(DOCKER_EXTRA_ARGS) -t $(DOCKER_IMAGE_FULL_NAME) .
 
 docker-login:
@@ -41,6 +41,7 @@ docker-login:
 	@rm -r target/
 
 docker-publish: docker-login
+	# Publish Docker image
 	$(DOCKER) push $(DOCKER_IMAGE_FULL_NAME)
 
 .PHONY: docker docker-unchecked docker-login docker-publish

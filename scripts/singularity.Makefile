@@ -41,17 +41,19 @@ export SINGULARITY_BUILD_RECIPE
 singularity: clean build docker singularity-build
 
 singularity-build:
+	# Create Singularity build recipe
 	@mkdir -p target
 	@touch target/recipe.def
 	@echo "$${SINGULARITY_BUILD_RECIPE}" > target/recipe.def
 
-	# Building Singularity image $(SINGULARITY_IMAGE_FULL_NAME)
+	# Build Singularity image $(SINGULARITY_IMAGE_FULL_NAME)
+	# NOTE: Building is going to need sudo!
 	sudo $(SINGULARITY) build $(SINGULARITY_EXTRA_ARGS) $(SINGULARITY_IMAGE_FULL_NAME) target/recipe.def
 
 	@rm target/recipe.def
 
 singularity-sign:
-	# Signing image $(SINGULARITY_IMAGE_FULL_NAME)
+	# Sign image $(SINGULARITY_IMAGE_FULL_NAME)
 	singularity sign $(SINGULARITY_IMAGE_FULL_NAME)
 
 singularity-login:
@@ -61,13 +63,13 @@ singularity-login:
 	@chmod 600 target/singularity_token
 	@echo $(SINGULARITY_TOKEN) > target/singularity_token
 
-	# Logging into $(SINGULARITY_REGISTRY)
+	# Log into $(SINGULARITY_REGISTRY)
 	cat target/singularity_token | $(SINGULARITY) remote login --password-stdin $(SINGULARITY_REGISTRY)
 
 	@rm target/singularity_token
 
 singularity-publish: singularity-sign singularity-login
-	# Publishing singularity image to $(SINGULARITY_PUSH_TARGET)
+	# Publish singularity image to $(SINGULARITY_PUSH_TARGET)
 	$(SINGULARITY) push $(SINGULARITY_IMAGE_FULL_NAME) $(SINGULARITY_PUSH_TARGET)
 
 .PHONY: singularity singularity-sign singularity-build singularity-login singularity-publish
