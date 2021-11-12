@@ -48,7 +48,7 @@ singularity-build:
 
 	# Build Singularity image $(SINGULARITY_IMAGE_FULL_NAME)
 	# NOTE: Building is going to need sudo!
-	sudo $(SINGULARITY) build $(SINGULARITY_EXTRA_ARGS) $(SINGULARITY_IMAGE_FULL_NAME) target/recipe.def
+	sudo $(SINGULARITY) build --force $(SINGULARITY_EXTRA_ARGS) $(SINGULARITY_IMAGE_FULL_NAME) target/recipe.def
 
 	@rm target/recipe.def
 
