@@ -46,8 +46,8 @@ the `scripts/bridge-dev.Makefile` have to be adapted.
 - `pyproject.toml`: replace the mantik dependency with a local dependency and add mnp as a local dependency as
   ```toml
   mantik = { path = "<local path to mantik core repo>/python_sdk", develop = true }
-  mnp = { path = "<local path to mantik core repo>/mnp/mnppython", develop = true }
   ```
+  **Note:** mantik depends on mnp, hence the local version of mnp is installed as well.
 - `Makefile`: instead of the `scripts/integrate.Makefile`, use `scripts/integrate-dev.Makefile`, i.e. replace
   ```make
   include $(ROOT)/scripts/python/integrate.Makefile
