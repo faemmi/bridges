@@ -19,14 +19,29 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+import os
+import logging
+
 import mantik
+
 from algorithm_wrapper import AlgorithmWrapper
+from dataset_wrapper import DataSetWrapper
+
+logger = logging.getLogger(__name__)
+
+PORT = os.getenv("MANTIK_MNP_PORT", default=8502)
 
 
-def createAlgorithm(mantikheader: mantik.types.MantikHeader):
-    algorithm = AlgorithmWrapper(mantikheader)
-    algorithm.try_init_catching()
-    return algorithm
+def provide_wrapper(mantikheader: mantik.types.MantikHeader):
+    logger.debug("Received mantikheader %s", mantikheader)
+    if mantikheader.kind == "dataset":
+        bridge_provider = DataSetWrapper(mantikheader)
+    elif mantikheader.kind == "algorithm":
+        bridge_provider = AlgorithmWrapper(mantikheader)
+    else:
+        raise RuntimeError("Bridge does not support bridge kind %s", mantikheader.kind)
+    logger.debug("Returning bridge provider %s", bridge_provider)
+    return bridge_provider
 
 
-mantik.bridge.start_mnp_bridge(createAlgorithm, "Sklearn Bridge")
+mantik.bridge.start_mnp_bridge(provide_wrapper, "sklearn bridge", port=PORT)

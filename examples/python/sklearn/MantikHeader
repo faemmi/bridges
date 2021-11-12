@@ -3,6 +3,7 @@ kind: bridge
 account: mantik
 name: sklearn
 suitable:
+  - dataset
   - algorithm
   - trainable
 dockerImage: mantikai/bridge.sklearn:v0.3.1-rc2

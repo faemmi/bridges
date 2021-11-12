@@ -1,4 +1,3 @@
-#
 # This file is part of the Mantik Project.
 # Copyright (c) 2020-2021 Mantik UG (Haftungsbeschränkt)
 # Authors: See AUTHORS file
@@ -19,13 +18,20 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+"""Run sklearn.cluster.KMeans via mantik."""
+import pathlib
+
 import mantik
-from dataset_wrapper import DataSetWrapper
 
+__file_loc__ = pathlib.Path(__file__).parent
 
-def create_dataset(mantikheader: mantik.types.MantikHeader):
-    dataset = DataSetWrapper(mantikheader)
-    return dataset
-
-
-mantik.bridge.start_mnp_bridge(create_dataset, "Kmeans DataSet Bridge")
+with mantik.engine.Client("localhost", 8087) as client:
+    climetlab_bridge = client.add_artifact((__file_loc__ / "../climetlab").as_posix())
+    power_production_dataset = client.add_artifact(
+        (__file_loc__ / "../climetlab/datasets/power-production").as_posix()
+    )
+    xarray_bridge = client.add_artifact(__file_loc__.as_posix())
+    transform = client.add_artifact((__file_loc__ / "algorithms/power-production").as_posix())
+    with client.enter_session():
+        result = client.apply([transform], data=power_production_dataset)
+        print(result.bundle.value)

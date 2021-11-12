@@ -68,7 +68,7 @@ You will need
    ```
    **Note:** Each time when you update a dependency, you need to run `poetry lock` to
    update the `poetry.lock` file, which is used by poetry to install the dependencies.
-4. In the `MantikHeader` (in `<bridge type>/<application>/MantikHeader`) define the bridge properties
+4. In the `MantikHeader` (in `<bridge/framework name>/MantikHeader`) define the bridge properties
    that are relevant for the mantik engine
    ```YAML
    kind: bridge
@@ -258,19 +258,19 @@ You will need
 
    with mantik.engine.Client("localhost", 8087) as client:
    # Submit all bridges to the engine
-       dataset = client.add_artifact((__file_loc__ / "../../dataset/sklearn").as_posix())
-       pandas = client.add_artifact((__file_loc__ / "../../algorithm/pandas").as_posix())
+       dataset = client.add_artifact((__file_loc__ / "../sklearn").as_posix())
+       pandas = client.add_artifact((__file_loc__ / "../pandas").as_posix())
        sklearn = client.add_artifact(__file_loc__.as_posix())
 
        # Submit all payloads for each bridge to the engine.
        simple_dataset = client.add_artifact(
-           (__file_loc__ / "../../dataset/sklearn/datasets/simple").as_posix()
+           (__file_loc__ / "../sklearn/datasets/simple").as_posix()
        )
        transform = client.add_artifact(
-           (__file_loc__ / "../../algorithm/pandas/algorithms/transform").as_posix()
+           (__file_loc__ / "../pandas/algorithms/transform").as_posix()
        )
        transform2 = client.add_artifact(
-           (__file_loc__ / "../../algorithm/pandas/algorithms/transform2").as_posix()
+           (__file_loc__ / "../pandas/algorithms/transform2").as_posix()
        )
        kmeans = client.add_artifact((__file_loc__ / "algorithms/simple").as_posix())
 

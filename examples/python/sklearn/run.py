@@ -26,8 +26,26 @@ import mantik
 __file_loc__ = pathlib.Path(__file__).parent
 
 with mantik.engine.Client("localhost", 8087) as client:
-    dataset = client.add_artifact(__file_loc__.as_posix())
-    simple_dataset = client.add_artifact((__file_loc__ / "datasets/simple").as_posix())
+    climetlab_bridge = client.add_artifact((__file_loc__ / "../climetlab").as_posix())
+    xarray_bridge = client.add_artifact((__file_loc__ / "../xarray").as_posix())
+    sklearn_bridge = client.add_artifact(__file_loc__.as_posix())
+
+    power_production_dataset = client.add_artifact(
+        (__file_loc__ / "../climetlab/datasets/power-production").as_posix()
+    )
+    transform = client.add_artifact(
+        (__file_loc__ / "../xarray/algorithms/power-production").as_posix()
+    )
+    gradientboosting = client.add_artifact(
+        (__file_loc__ / "algorithms/power-production").as_posix()
+    )
+
     with client.enter_session():
-        result = client.get(simple_dataset, action_name="Get simple kmeans dataset")
-        print(result.bundle.value)
+        model_pipeline, stats = client.train(
+            pipeline=[transform, gradientboosting],
+            data=power_production_dataset,
+        )
+        print(f"Stats: {stats.bundle.value}")
+
+        result = client.apply(model_pipeline, data=power_production_dataset)
+        print(f"Apply result: {result.bundle.value}")

@@ -1,4 +1,3 @@
-#
 # This file is part of the Mantik Project.
 # Copyright (c) 2020-2021 Mantik UG (Haftungsbeschränkt)
 # Authors: See AUTHORS file
@@ -19,13 +18,23 @@
 # You can be released from the requirements of the license by purchasing
 # a commercial license.
 #
+"""Run sklearn.cluster.KMeans via mantik."""
+import pathlib
+
 import mantik
-from algorithm_wrapper import AlgorithmWrapper
 
+__file_loc__ = pathlib.Path(__file__).parent
 
-def create_algorithm(mantikheader: mantik.types.MantikHeader):
-    algorithm = AlgorithmWrapper(mantikheader)
-    return algorithm
+with mantik.engine.Client("localhost", 8087) as client:
+    dataset = client.add_artifact((__file_loc__ / "../sklearn").as_posix())
+    pandas = client.add_artifact(__file_loc__.as_posix())
 
+    simple_dataset = client.add_artifact(
+        (__file_loc__ / "../sklearn/datasets/simple").as_posix(),
+    )
+    transform = client.add_artifact((__file_loc__ / "algorithms/transform").as_posix())
+    transform2 = client.add_artifact((__file_loc__ / "algorithms/transform2").as_posix())
 
-mantik.bridge.start_mnp_bridge(create_algorithm, "Pandas Bridge")
+    with client.enter_session():
+        result = client.apply([transform, transform2], data=simple_dataset)
+        print(result.bundle.value)

@@ -1,8 +1,9 @@
 # MantikHeader for Simple Learn Bridge
 kind: bridge
 account: mantik
-name: dataset.kmeans
+name: pandas
 suitable:
   - dataset
-dockerImage: mantikai/bridge.dataset.kmeans
+  - algorithm
+dockerImage: mantikai/bridge.pandas
 protocol: 1

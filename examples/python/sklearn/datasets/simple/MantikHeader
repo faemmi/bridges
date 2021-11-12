@@ -1,5 +1,5 @@
 name: kmeans
-bridge: mantik/dataset.kmeans
+bridge: mantik/bridge.sklearn
 kind: dataset
 # The type of the data
 type:
