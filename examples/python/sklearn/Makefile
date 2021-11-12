@@ -3,5 +3,5 @@ NAME = sklearn
 IMAGE_NAME = bridge.sklearn
 
 # Include all other necessary Makefiles.
-ROOT = ./../../../../
+ROOT = ./../../../
 include $(ROOT)/scripts/python/integrate.Makefile

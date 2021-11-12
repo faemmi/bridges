@@ -3,5 +3,5 @@ NAME = xarray
 IMAGE_NAME = bridge.xarray
 
 # Include all other necessary Makefiles.
-ROOT = ./../../../../
+ROOT = ./../../../
 include $(ROOT)/scripts/python/integrate.Makefile

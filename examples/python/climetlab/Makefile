@@ -3,5 +3,5 @@ NAME = climetlab
 IMAGE_NAME = bridge.climetlab
 
 # Include all other necessary Makefiles.
-ROOT = ./../../../../
+ROOT = ./../../../
 include $(ROOT)/scripts/python/integrate.Makefile

@@ -3,5 +3,5 @@ NAME = pandas
 IMAGE_NAME = bridge.pandas
 
 # Include all other necessary Makefiles.
-ROOT = ./../../../../
+ROOT = ./../../../
 include $(ROOT)/scripts/python/integrate.Makefile
