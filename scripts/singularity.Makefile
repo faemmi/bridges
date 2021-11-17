@@ -9,26 +9,26 @@ SINGULARITY_IMAGE_NAME = $(IMAGE_NAME):$(MANTIK_VERSION)
 
 # Below variable DOCKER_REPO is defined in docker.Makefile
 SINGULARITY_IMAGE_PREFIX ?= $(DOCKER_REPO)-
-SINGULARITY_IMAGE_FULL_NAME = $(SINGULARITY_IMAGE_PREFIX)$(SINGULARITY_IMAGE_NAME).sif
+SINGULARITY_IMAGE_FILE = $(SINGULARITY_IMAGE_PREFIX)$(SINGULARITY_IMAGE_NAME).sif
 
 
 # Credentials for publishing the image
-SINGULARITY_REGISTRY ?= SyslabsCloud
+SINGULARITY_REGISTRY ?= SylabsCloud
 SINGULARITY_USERNAME ?= $(SINGULARITY_USERNAME)
 SINGULARITY_REPO ?= default
 SINGULARITY_TOKEN ?= $(SINGULARITY_TOKEN)
 SINGULARITY_LIBRARY ?= library
-SINGULARITY_PUSH_TARGET = $(SINGULARITY_LIBRARY)://$(SINGULARITY_USERNAME)/${SINGULARITY_REPO:+$SINGULARITY_REPO/}/$(SINGULARITY_IMAGE_FULL_NAME)
+SINGULARITY_PUSH_TARGET = $(SINGULARITY_LIBRARY)://$(SINGULARITY_USERNAME)/$(SINGULARITY_REPO)/$(SINGULARITY_IMAGE_NAME)
 
 SINGULARITY_EXTRA_ARGS ?=
 
 # Use this source for fetching the Docker image
 DOCKER_SOURCE ?= docker-daemon
 
-# Below variable DOCKER_IMAGE_FULL_NAME is defined in docker.Makefile
+# Below variable DOCKER_IMAGE_FILE is defined in docker.Makefile
 define SINGULARITY_BUILD_RECIPE
 bootstrap: $(DOCKER_SOURCE)
-from: $(DOCKER_IMAGE_FULL_NAME)
+from: $(DOCKER_IMAGE_FILE)
 
 %startscript
     cd /opt/bridge
@@ -46,30 +46,30 @@ singularity-build:
 	@touch target/recipe.def
 	@echo "$${SINGULARITY_BUILD_RECIPE}" > target/recipe.def
 
-	# Build Singularity image $(SINGULARITY_IMAGE_FULL_NAME)
+	# Build Singularity image $(SINGULARITY_IMAGE_FILE)
 	# NOTE: Building is going to need sudo!
-	sudo $(SINGULARITY) build --force $(SINGULARITY_EXTRA_ARGS) $(SINGULARITY_IMAGE_FULL_NAME) target/recipe.def
+	sudo $(SINGULARITY) build --force $(SINGULARITY_EXTRA_ARGS) $(SINGULARITY_IMAGE_FILE) target/recipe.def
 
 	@rm target/recipe.def
 
 singularity-sign:
-	# Sign image $(SINGULARITY_IMAGE_FULL_NAME)
-	singularity sign $(SINGULARITY_IMAGE_FULL_NAME)
+	# Sign image $(SINGULARITY_IMAGE_FILE)
+	singularity sign $(SINGULARITY_IMAGE_FILE)
 
 singularity-login:
 	@# Trick to not show the password
 	@mkdir -p target
-	@touch target/singularity_token
-	@chmod 600 target/singularity_token
-	@echo $(SINGULARITY_TOKEN) > target/singularity_token
+	@touch target/singularity-token
+	@chmod 600 target/singularity-token
+	@echo $(SINGULARITY_TOKEN) > target/singularity-token
 
 	# Log into $(SINGULARITY_REGISTRY)
-	cat target/singularity_token | $(SINGULARITY) remote login --password-stdin $(SINGULARITY_REGISTRY)
+	$(SINGULARITY) remote login --tokenfile target/singularity-token $(SINGULARITY_REGISTRY)
 
-	@rm target/singularity_token
+	@rm target/singularity-token
 
 singularity-publish: singularity-sign singularity-login
 	# Publish singularity image to $(SINGULARITY_PUSH_TARGET)
-	$(SINGULARITY) push $(SINGULARITY_IMAGE_FULL_NAME) $(SINGULARITY_PUSH_TARGET)
+	$(SINGULARITY) push $(SINGULARITY_IMAGE_FILE) $(SINGULARITY_PUSH_TARGET)
 
 .PHONY: singularity singularity-sign singularity-build singularity-login singularity-publish
