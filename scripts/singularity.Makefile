@@ -25,10 +25,10 @@ SINGULARITY_EXTRA_ARGS ?=
 # Use this source for fetching the Docker image
 DOCKER_SOURCE ?= docker-daemon
 
-# Below variable DOCKER_IMAGE_FILE is defined in docker.Makefile
+# Below variable DOCKER_IMAGE_FULL_NAME is defined in `docker.Makefile`
 define SINGULARITY_BUILD_RECIPE
 bootstrap: $(DOCKER_SOURCE)
-from: $(DOCKER_IMAGE_FILE)
+from: $(DOCKER_IMAGE_FULL_NAME)
 
 %startscript
     cd /opt/bridge
