@@ -1,0 +1,13 @@
+name: power-production
+bridge: mantik/pandas
+kind: dataset
+metaVariables:
+  # Whether the bridge runs in Docker or Singularity.
+  - name: runs_in_docker
+    type: bool
+    value: true
+# The type of the data
+type:
+  columns:
+    date: string
+    power: float64

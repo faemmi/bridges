@@ -1,0 +1,14 @@
+name: power-production
+bridge: mantik/xarray
+kind: algorithm
+type:
+  input:
+    columns:
+      date: string
+      power: float64
+  output:
+    columns:
+      date: string
+      power: float64
+      time_of_day: float64
+      time_of_year: float64

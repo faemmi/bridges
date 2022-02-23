@@ -1,0 +1,12 @@
+# Python-specific files
+**/__pycache__/
+*.egg-info/
+**/.pytest_cache/
+*.pyc
+
+# mantik files
+**/target/
+*.pickle
+
+# Singularity files
+*.sif

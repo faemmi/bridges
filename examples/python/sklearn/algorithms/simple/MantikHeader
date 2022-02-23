@@ -1,0 +1,23 @@
+name: kmeans
+bridge: mantik/sklearn
+kind: trainable
+metaVariables:
+  - name: n_clusters
+    type: int32
+    value: 2
+# The type of training data
+trainingType:
+  columns:
+    x: int32
+# The type for statistic after training
+statType:
+  columns:
+    x: int32
+# The type when trained
+type:
+  input:
+    columns:
+      x: int32
+  output:
+    columns:
+      x: int32
